@@ -103,4 +103,9 @@ public class Files {
             }
         }
     }
+    
+    //Validate extension ASM
+    public boolean isASM(String archive){
+        return new File(archive).getAbsolutePath().toLowerCase().endsWith(".asm");
+    }
 }

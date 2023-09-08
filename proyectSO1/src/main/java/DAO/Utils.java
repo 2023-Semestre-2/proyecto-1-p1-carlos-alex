@@ -78,7 +78,7 @@ public class Utils {
         String[] code=line.split("\\s+");
         String operator = code[0];
         String register = code[1];
-        int result = 0;
+
         switch(operator) {
             case "MOV":
                 register = code[1].contains(",")==true?code[1].substring(0, code[1].length()-1):code[1];
@@ -92,12 +92,10 @@ public class Utils {
                 registers.put(register, registers.get("AC"));
                 break;
             case "ADD":
-                result = registers.get("AC")+registers.get(register);
-                registers.put("AC",result);
+                registers.put("AC", registers.get("AC")+registers.get(register));
                 break;
             case "SUB":
-                result = registers.get("AC")-registers.get(register);
-                registers.put("AC",result);
+                registers.put("AC", registers.get("AC")-registers.get(register));
                 break;
             default:
                 break;
@@ -247,7 +245,7 @@ public class Utils {
      */
     private boolean isNumeric(String cadena){
 	try {
-            Integer.parseInt(cadena);
+            Integer.valueOf(cadena);
             return true;
 	} catch (NumberFormatException nfe){
             return false;

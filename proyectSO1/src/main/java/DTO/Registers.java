@@ -12,23 +12,23 @@ import java.util.Map;
  * @author Caili
  */
 public class Registers {
-    Map<String, Integer> register = new HashMap<>();
+    Map<String, String> register = new HashMap<>();
 
     public Registers() {
-        register.put("AX", 0);
-        register.put("BX", 0);
-        register.put("CX", 0);
-        register.put("DX", 0);
-        register.put("AC", 0);
-        register.put("PC", 0);
-        register.put("IR", 0);
+        register.put("AX", "");
+        register.put("BX", "");
+        register.put("CX", "");
+        register.put("DX", "");
+        register.put("AC", "");
+        register.put("PC", "");
+        register.put("IR", "");
     }
 
-    public Map<String, Integer> getRegister() {
+    public Map<String, String> getRegister() {
         return register;
     }
 
-    public void setRegister(Map<String, Integer> register) {
+    public void setRegister(Map<String, String> register) {
         this.register = register;
     }
 }

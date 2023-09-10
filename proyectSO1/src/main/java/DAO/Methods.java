@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  *
@@ -167,6 +168,77 @@ public class Methods {
         return register;
     }
     
+    
+    //Intercambian los valores entre los registros
+    public Map<String, String> swap(Map<String, String> register, String instruction){
+        String[] instr = instruction.split(" ");
+        if(instr[0].equalsIgnoreCase("SWAP")){
+            String[] regV = instr[1].split(",");
+            String valueRegister1 = register.get(regV[0]);            String valueRegister2 = register.get(regV[1]);
+            register.replace(regV[0], valueRegister2);
+            register.replace(regV[1], valueRegister1);
+        }
+        return register;
+    }
+    
+    //Finaliza el programa 
+    public boolean exit(String instruction){
+        boolean result = false;
+        if(instruction.equalsIgnoreCase("INT 20H")){
+            result=true;
+        }
+        return result;
+    }
+    
+    //Finaliza el programa se imprime el valor del DX
+    public void print(Map<String, String> register, String instruction){
+        if(instruction.equalsIgnoreCase("INT 10H")){
+            System.out.println("");
+            System.out.println(register.get("DX"));
+        }
+    }
+    
+    //Entrada del teclado (solo numérico 0-255), el valor se guarda en el DX, finaliza con un ENTER
+    public Map<String, String> read(Map<String, String> register, String instruction){
+        Scanner reader = new Scanner(System.in);
+        if(instruction.equalsIgnoreCase("INT 09H")){
+            System.out.println("Escriba un valor numerico entre 0 a 255: ");
+            int numero = reader.nextInt();
+            if(numero>255 || numero<0){
+                read(register, instruction);
+            }
+            Scanner input= new Scanner(System.in);
+            System.out.println("Presiona la tecla Enter para finalizar");
+            String readString = input.nextLine();
+            while(readString!=null) {
+                System.out.println(readString);
+                if (readString.equals("")){
+                    System.out.println("Tecla Enter presionada");
+                    register.replace("DX", String.valueOf(numero));
+                    System.out.println("Se guardado el registro en el DX");
+                    return register;
+                }     
+                if (input.hasNextLine()){
+                    readString = input.nextLine();
+                }                    
+                else{
+                    readString = null;
+                }                    
+            }            
+        }
+        return register;
+    }
+    
+    
+    public Stack push(Stack stack, Map<String, String> register, String instruction){
+        String[] instr = instruction.split(" ");
+        if(instr[0].equalsIgnoreCase("PUSH")){
+            String value = register.get(instr[1]);
+            stack.push(value);
+        }
+        
+        return stack;
+    }
     
     public List<WeightTable> readFileToTable(String archive) throws Exception{
         List<WeightTable> result = new ArrayList<>();

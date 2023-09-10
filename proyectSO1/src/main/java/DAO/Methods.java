@@ -4,7 +4,7 @@
  */
 package DAO;
 
-import DTO.TableBSP;
+import DTO.WeightTable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,8 @@ public class Methods {
         return weight;
     }
     
-    public List<TableBSP> readFileToTable(String archive) throws Exception{
-        List<TableBSP> result = new ArrayList<>();
+    public List<WeightTable> readFileToTable(String archive) throws Exception{
+        List<WeightTable> result = new ArrayList<>();
         
         File file = new File(archive);
         if (file.exists()) {
@@ -58,7 +58,7 @@ public class Methods {
                 int count=0;
                 while (openfile.hasNextLine()) {
                     String line = openfile.nextLine();
-                    TableBSP bsp = new TableBSP();
+                    WeightTable bsp = new WeightTable();
                     bsp.setInstruction(line);
                     bsp.setNumberLine(count);
                     bsp.setWeight(getWeight(line));

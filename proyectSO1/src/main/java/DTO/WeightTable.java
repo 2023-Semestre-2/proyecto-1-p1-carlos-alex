@@ -8,12 +8,12 @@ package DTO;
  *
  * @author Caili
  */
-public class TableBSP {
+public class WeightTable {
     private int numberLine;
     private String instruction;
     private int weight;
 
-    public TableBSP() {
+    public WeightTable() {
     }
 
     public int getNumberLine() {

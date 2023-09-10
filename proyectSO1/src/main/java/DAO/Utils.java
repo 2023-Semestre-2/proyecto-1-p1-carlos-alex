@@ -7,10 +7,7 @@ package DAO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -18,56 +15,6 @@ import java.util.Random;
  * @author Caili
  */
 public class Utils {
-    
-    /**
-     * Metodo para rellenar el numero binario con ceros para mantener su representacion en 8 bits
-     * @param number
-     * @return 
-     */
-    private String fillZeros(int number){
-        String binary = Integer.toBinaryString(number);
-        
-        if (binary.length() >= 8) {
-            return binary;
-        }
-        StringBuilder sb = new StringBuilder();
-        while (sb.length() < 8 - binary.length()) {
-            sb.append('0');
-        }
-        sb.append(binary);
-
-        return sb.toString();
-    }
-    
-    /**
-     * Metodo para convertir un numero entero a binario
-     * @param number
-     * @return 
-     */
-    public String convertDecimalToBinary(int number){
-        if(number<0){
-            return Integer.toBinaryString(number).substring(24, 32);
-        }
-        return fillZeros(number); 
-    }
-    
-    /**
-     * Metodo para obtener la representacion binaria de la instruccion asm
-     * @param line
-     * @return 
-     */
-    public String getBinaryCode(String line){
-        MemoryDAO p = new MemoryDAO();
-        
-        String[] code=line.split("\\s+");
-        String operator = code[0];
-        String register = code[1].contains(",")==true?code[1].substring(0, code[1].length()-1):code[1];
-        String number = code[1].contains(",")==true? code[2] : "";
-        int sendNumber = number.equals("") ? 0 : Integer.parseInt(number);
-        return p.getValueOperationByKey(operator)+" "+p.getValueRegisterByKey(register)
-                +" "+convertDecimalToBinary(sendNumber);
-    }
-    
     
     /**
      * Metodo para operar y almacenar resultados de las instrucciones asm
@@ -258,7 +205,7 @@ public class Utils {
      * @param location
      * @return 
      */
-    public List<Map> result(String location){
+    /*public List<Map> result(String location){
         List<Map> result = new ArrayList();
         HashMap<String, Integer> registers = new HashMap<>();
         registers.put("AC",0 );
@@ -294,5 +241,5 @@ public class Utils {
         } catch (IOException e) {
         }
         return result;
-    }
+    }*/
 }

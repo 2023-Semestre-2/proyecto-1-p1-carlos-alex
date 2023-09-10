@@ -123,6 +123,7 @@ public class Methods {
         return register;
     }
     
+    
     //Resta al AC el valor del registro
     public Map<String, String> sub(Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
@@ -134,7 +135,37 @@ public class Methods {
         return register;
     }
     
+    //Incrementa
+    //1-Incrementa en 1 el valor del AC
+    //2-Incrementa en 1 el valor ubicado en el registro 
+    public Map<String, String> inc(Map<String, String> register, String instruction){
+        if(!instruction.contains(" ") && instruction.equalsIgnoreCase("INC")){
+            int ac = Integer.parseInt(register.get("AC"))+1;
+            register.replace("AC", String.valueOf(ac));
+        }
+        if(instruction.contains(" ")){
+            String[] instr = instruction.split(" ");
+            int regV = Integer.parseInt(register.get(instr[1]))+1;
+            register.replace(instr[1], String.valueOf(regV));
+        }
+        return register;
+    }
     
+    //Incrementa
+    //1-Decrementa en 1 el valor del AC
+    //2-Decrementa en 1 el valor ubicado en el registro 
+    public Map<String, String> dec(Map<String, String> register, String instruction){
+        if(!instruction.contains(" ") && instruction.equalsIgnoreCase("DEC")){
+            int ac = Integer.parseInt(register.get("AC"))-1;
+            register.replace("AC", String.valueOf(ac));
+        }
+        if(instruction.contains(" ")){
+            String[] instr = instruction.split(" ");
+            int regV = Integer.parseInt(register.get(instr[1]))-1;
+            register.replace(instr[1], String.valueOf(regV));
+        }
+        return register;
+    }
     
     
     public List<WeightTable> readFileToTable(String archive) throws Exception{

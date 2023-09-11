@@ -39,6 +39,32 @@ public class Methods {
         return new Files().countLines(path);
     } 
     
+    
+     /**
+     * 
+     * @param memory
+     * @return 
+     */
+    //Obtener memoria principal
+    public int principalMemory(Integer memory){
+        if(memory==null){
+            return 256;
+        }
+        return memory;
+    } 
+    
+    /**
+     * 
+     * @param memory
+     * @return 
+     */
+    //Obtener memoria configurable
+    public int configMemory(Integer memory){
+        if(memory==null){
+            return 512;
+        }
+        return memory;
+    } 
     /**
      * 
      * @param path

@@ -14,21 +14,35 @@ import java.util.Stack;
 
 /**
  *
- * @author Caili
+ * @author Caili - alex
  */
 public class Methods {
     
+    /**
+     * 
+     * @param path
+     * @return 
+     */
     //Contador de lineas del programa obtiene 1 KB en memoria
     public int countProgram(String path){
         return new Files().countLines(path);
     }   
     
+    /**
+     * 
+     * @param path
+     * @return 
+     */
     //Valida si se puede cargar archivo de formato ASM
     public boolean loadFileASM(String path){
         return new Files().isASM(path);
     } 
     
-    
+    /**
+     * 
+     * @param line
+     * @return 
+     */
     //Obtener peso
     public int getWeight(String line){
         int weight = 0;
@@ -53,7 +67,12 @@ public class Methods {
         return weight;
     }
     
-    
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Carga el valor al AC proveniente de un registro
     public Map<String, String> load(Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
@@ -66,7 +85,12 @@ public class Methods {
         return register;
     }
     
-    
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Almacena el valor del AC a un registro destino 
     public Map<String, String> store(Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
@@ -92,6 +116,12 @@ public class Methods {
 	}
     }
     
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Movimiento de los valores a un destino. 
     // 1- MOV reg_destino, reg_origen
     // 2- MOV reg_destino, valor
@@ -113,6 +143,12 @@ public class Methods {
         return register;
     }
     
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Suma al AC el valor del registro
     public Map<String, String> add(Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
@@ -124,7 +160,12 @@ public class Methods {
         return register;
     }
     
-    
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Resta al AC el valor del registro
     public Map<String, String> sub(Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
@@ -136,6 +177,12 @@ public class Methods {
         return register;
     }
     
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Incrementa
     //1-Incrementa en 1 el valor del AC
     //2-Incrementa en 1 el valor ubicado en el registro 
@@ -152,6 +199,12 @@ public class Methods {
         return register;
     }
     
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Incrementa
     //1-Decrementa en 1 el valor del AC
     //2-Decrementa en 1 el valor ubicado en el registro 
@@ -168,7 +221,12 @@ public class Methods {
         return register;
     }
     
-    
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Intercambian los valores entre los registros
     public Map<String, String> swap(Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
@@ -181,6 +239,11 @@ public class Methods {
         return register;
     }
     
+    /**
+     * 
+     * @param instruction
+     * @return 
+     */
     //Finaliza el programa 
     public boolean exit(String instruction){
         boolean result = false;
@@ -190,6 +253,11 @@ public class Methods {
         return result;
     }
     
+    /**
+     * 
+     * @param register
+     * @param instruction 
+     */
     //Finaliza el programa se imprime el valor del DX
     public void print(Map<String, String> register, String instruction){
         if(instruction.equalsIgnoreCase("INT 10H")){
@@ -198,6 +266,12 @@ public class Methods {
         }
     }
     
+    /**
+     * 
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Entrada del teclado (solo numérico 0-255), el valor se guarda en el DX, finaliza con un ENTER
     public Map<String, String> read(Map<String, String> register, String instruction){
         Scanner reader = new Scanner(System.in);
@@ -229,6 +303,13 @@ public class Methods {
         return register;
     }
     
+    /**
+     * 
+     * @param stack
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Forma de representar los parámetros de entrada. Los valores v1, v2 .. vn serán 
     //numéricos y se guardará en pila. Máximo 3 parámetros de entrada
     public Stack param(Stack stack, Map<String, String> register, String instruction){
@@ -249,17 +330,75 @@ public class Methods {
         }
         return stack;
     }
-    
+    /**
+     * 
+     * @param stack
+     * @param register
+     * @param instruction
+     * @return 
+     */
     //Guarda en la pila el valor del registro ....
     public Stack push(Stack stack, Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
-        if(instr[0].equalsIgnoreCase("PUSH")){
+        if(instr[0].equalsIgnoreCase("PUSH") && stack.size()<=5){
             String value = register.get(instr[1]);
             stack.push(value);
+        }
+        else {
+            //retorna mensaje de error de desbordamiento para mostrar al usuario, pensar en usar bandera para mostrar en la interfaz
+            //igual para el pop
         }
         
         return stack;
     }
+    
+    /**
+     * Obtiene el primer valor de la pila y lo almacena en el registro indicado
+     * @param stack
+     * @param register
+     * @param instruction
+     * @return 
+     */
+    public Stack pop(Stack stack, Map<String, String> register, String instruction){
+        String[] instr = instruction.split(" ");
+        if(instr[0].equalsIgnoreCase("POP") && !stack.empty()){
+            String registerDestiny = instr[1];
+            register.replace(registerDestiny, String.valueOf(stack.pop())); 
+        }
+        else {
+            //retorna mensaje de error de desbordamiento para mostrar al usuario, pensar en usar bandera para mostrar en la interfaz
+            //igual para el push
+        }
+        
+        return stack; //revisar que devuelve el pop o dejarlo asi
+    }
+    
+    /**
+     * Realiza la comparacion entre los registros y modifica la bandera de salto
+     * @param register
+     * @param instruction
+     * @return 
+     */
+    public Map<String, String> cmp(Map<String, String> register, String instruction) {
+        String[] instr = instruction.split(" ");
+        if(instr[0].equalsIgnoreCase("CMP")) {
+            boolean containsComma = instr[1].contains(",");
+            if (containsComma) {
+                String[] registers = instr[1].split(",");
+                String value1 = register.get(registers[0]);
+                String value2 = register.get(registers[1]);
+                if (value1.equals(value2)) {
+                    register.replace("FLAG", "true"); //bandera para salto JE(true)
+                }
+                else {
+                    register.replace("FLAG", "false"); //bandera para salto JNE(false)
+                }
+                return register;
+            }
+        }
+        return register;
+    }
+    
     
     public List<WeightTable> readFileToTable(String archive) throws Exception{
         List<WeightTable> result = new ArrayList<>();

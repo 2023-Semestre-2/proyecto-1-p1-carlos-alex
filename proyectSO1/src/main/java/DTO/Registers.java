@@ -22,6 +22,7 @@ public class Registers {
         register.put("AC", "");
         register.put("PC", "");
         register.put("IR", "");
+        register.put("FLAG", "false");
     }
 
     public Map<String, String> getRegister() {

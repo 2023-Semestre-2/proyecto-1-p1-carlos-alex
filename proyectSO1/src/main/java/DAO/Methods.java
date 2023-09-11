@@ -399,7 +399,12 @@ public class Methods {
         return register;
     }
     
-    
+    /**
+     * 
+     * @param archive
+     * @return
+     * @throws Exception 
+     */
     public List<WeightTable> readFileToTable(String archive) throws Exception{
         List<WeightTable> result = new ArrayList<>();
         

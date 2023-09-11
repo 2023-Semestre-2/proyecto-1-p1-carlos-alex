@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,8 +29,8 @@ public class Files {
     public boolean deleteFile(String archive){
         return new File(archive).delete();
     }
-    //Count Lines File
-    public int countLines(String archive){
+    //Count Programs
+    public int countProgram(String archive){
         int count = 0;
         for (File file: new File(archive).listFiles()) {
             if (file.isFile()) {
@@ -36,6 +38,19 @@ public class Files {
             }
         }
         return count;
+    }
+    
+    //Count Lines from path
+    public int countLines(String archive){
+        int countLines= 0;
+        try{
+            FileReader fr = new FileReader(archive);
+            BufferedReader bf = new BufferedReader(fr);
+            countLines = (int) bf.lines().count();
+        } catch (FileNotFoundException fnfe){
+          return countLines;
+        }
+        return countLines;
     }
     //Create File
     public boolean createFile(String archive){

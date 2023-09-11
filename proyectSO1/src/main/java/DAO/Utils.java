@@ -59,7 +59,7 @@ public class Utils {
      * @return 
      */
     public int getRandomInitial(String location){
-        int countLines = new Files().countLines(location);
+        int countLines = new Files().countProgram(location);
 
         int min = 0;
         int max = 99;

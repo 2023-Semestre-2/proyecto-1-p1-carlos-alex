@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.Document;
 import DTO.WeightTable;
 import java.io.File;
 import java.util.ArrayList;
@@ -23,10 +24,20 @@ public class Methods {
      * @param path
      * @return 
      */
-    //Contador de lineas del programa obtiene 1 KB en memoria
+    //Contador de de archivos 
     public int countProgram(String path){
-        return new Files().countLines(path);
+        return new Files().countProgram(path);
     }   
+    
+     /**
+     * 
+     * @param path
+     * @return 
+     */
+    //Contador de lineas de un archivo 
+    public int countLines(String path){
+        return new Files().countLines(path);
+    } 
     
     /**
      * 
@@ -424,5 +435,30 @@ public class Methods {
             }
         }
         return result;
+    }
+    
+    
+    /**
+     * 
+     * @param routesFile
+     * @param localFiles
+     * @return
+     * @throws Exception 
+     */
+    public List<Document> loadFile(List<String> routesFile, List<Document> localFiles) throws Exception{
+        if(routesFile.isEmpty()){
+            return localFiles;
+        }
+        int cont=0;
+        for(;cont<routesFile.size();cont++){
+            Document document = new Document();
+            document.setIndex(cont);
+            document.setLocation(routesFile.get(cont));
+            document.setNumberLines(countLines(routesFile.get(cont)));
+            String[] locationPart = routesFile.get(cont).split("\\\\");
+            document.setName(locationPart[locationPart.length-1]);
+            localFiles.add(document);
+        }
+        return localFiles;
     }
 }

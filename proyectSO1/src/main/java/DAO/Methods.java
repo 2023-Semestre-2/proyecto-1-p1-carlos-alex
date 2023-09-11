@@ -229,7 +229,28 @@ public class Methods {
         return register;
     }
     
+    //Forma de representar los parámetros de entrada. Los valores v1, v2 .. vn serán 
+    //numéricos y se guardará en pila. Máximo 3 parámetros de entrada
+    public Stack param(Stack stack, Map<String, String> register, String instruction){
+        String[] instr = instruction.split(" ");
+        if(instr[0].equalsIgnoreCase("PARAM")){
+            boolean containsComma = instr[1].contains(",");
+            if(!containsComma){
+                stack.push(instr[1]);
+            }
+            if(containsComma){
+                String[] regV = instr[1].split(",");
+                if(regV.length<4){
+                    for (String regV1 : regV) {
+                        stack.push(regV1);
+                    }
+                }
+            }
+        }
+        return stack;
+    }
     
+    //Guarda en la pila el valor del registro ....
     public Stack push(Stack stack, Map<String, String> register, String instruction){
         String[] instr = instruction.split(" ");
         if(instr[0].equalsIgnoreCase("PUSH")){

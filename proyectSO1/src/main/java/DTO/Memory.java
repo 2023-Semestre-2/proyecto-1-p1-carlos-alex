@@ -12,10 +12,10 @@ import java.util.Map;
  * @author asmal
  */
 public class Memory {
-    Map<String, String> cells = new HashMap<>();
-    int reservedMemSize = 0; //se calcula dependiendo del tamano total
-    int memorySize = 0; //se configura al iniciar el programa
-    int userMemSize = 0; //memorySize-reservedSize
+    private Map<String, String> cells = new HashMap<>();
+    private int reservedMemSize = 0; //se calcula dependiendo del tamano total
+    private int memorySize = 0; //se configura al iniciar el programa
+    private int userMemSize = 0; //memorySize-reservedSize
     public Memory() {
         cells.put("name", "");
         cells.put("startingAddress", "");

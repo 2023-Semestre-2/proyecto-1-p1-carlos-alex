@@ -42,15 +42,13 @@ public class Files {
     
     //Count Lines from path
     public int countLines(String archive){
-        int countLines= 0;
-        try{
-            FileReader fr = new FileReader(archive);
-            BufferedReader bf = new BufferedReader(fr);
-            countLines = (int) bf.lines().count();
-        } catch (FileNotFoundException fnfe){
-          return countLines;
+        long lines = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(archive))) {
+            while (reader.readLine() != null) lines++;
+        } catch (IOException e) {
+            return 0;
         }
-        return countLines;
+        return (int)lines;
     }
     //Create File
     public boolean createFile(String archive){

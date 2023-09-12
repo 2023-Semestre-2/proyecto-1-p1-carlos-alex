@@ -58,6 +58,20 @@ public class Methods {
      * @param memory
      * @return 
      */
+    //Obtener memoria principal
+    public int virtualMemory(Integer memory){
+        if(memory==null){
+            return 64;
+        }
+        return memory;
+    } 
+    
+    
+    /**
+     * 
+     * @param memory
+     * @return 
+     */
     //Obtener memoria configurable
     public int configMemory(Integer memory){
         if(memory==null){

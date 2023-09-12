@@ -5,6 +5,7 @@
 package DAO;
 
 import DTO.Document;
+import DTO.Memory;
 import DTO.WeightTable;
 import java.io.File;
 import java.util.ArrayList;
@@ -500,5 +501,14 @@ public class Methods {
             localFiles.add(document);
         }
         return localFiles;
+    }
+    
+    public Memory loadMemory(Integer memorySize){
+        int almacenamiento = configMemory(memorySize);
+        
+        Memory memory = new Memory();
+        memory.setUserMemSize(almacenamiento);
+        
+        return memory;
     }
 }

@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.Cell;
 import DTO.Document;
 import DTO.Memory;
 import DTO.WeightTable;
@@ -503,12 +504,58 @@ public class Methods {
         return localFiles;
     }
     
-    public Memory loadMemory(Integer memorySize){
-        int almacenamiento = configMemory(memorySize);
+    public Memory loadMemory(Integer reservedMemSize, Integer memorySize, List<Document> document){
+        int memorySizeTotal = configMemory(memorySize);
+        int reservedMemSizeTotal = virtualMemory(reservedMemSize);
         
         Memory memory = new Memory();
-        memory.setUserMemSize(almacenamiento);
-        
+        //validar q la memoria total es mayor a la memoria reservada
+        if(memorySizeTotal>reservedMemSizeTotal){
+            memory.setMemorySize(memorySizeTotal);
+            memory.setReservedMemSize(reservedMemSizeTotal);
+            memory.setUserMemSize(memorySizeTotal-reservedMemSizeTotal);
+            
+            int count = 0;
+            
+            //cantidad de memoria
+            //asignar position de inicio y fin para los archivos
+            int startMem = reservedMemSizeTotal;
+            int userMemSize = memorySizeTotal-reservedMemSizeTotal;
+            
+            
+            List<Cell> cells = new ArrayList<>();
+            for(;count<memorySizeTotal;count++){
+                 //llenar memoria reservada
+                if(count<reservedMemSizeTotal){
+                    //llenamos en dado caso que haya documentos
+                    if(!document.isEmpty()){
+                        Cell cell = new Cell();
+                        cell.setIndex(count);
+                        //llenar el nombre en la memoria reservada
+                        if(count<document.size()){
+                            cell.setName(document.get(count).getName());
+                        }
+                        int countProgram = document.get(count).getNumberLines();
+                        //
+                        if(userMemSize>countProgram){
+                           //
+                           startMem = startMem +2;//para dar un espacio de 2 de programa a programa
+                           
+                           cell.setStartingAddress(startMem);
+                           cell.setEndindAddress(startMem+countProgram);
+                           
+                           startMem = startMem+countProgram;
+                           
+                        }
+                        cell.setIsReserved(true);
+                        cells.add(cell);
+                    }
+                    memory.setCellsReserved(cells);
+                }
+                
+                memory.setCells(cells);
+            }
+        }
         return memory;
     }
 }

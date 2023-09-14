@@ -14,7 +14,6 @@ public class Cell {
     private Integer startingAddress;
     private Integer endindAddress;
     private Integer index;
-    private String instruction;
     private boolean isReserved;
 
     public Cell() {
@@ -53,15 +52,6 @@ public class Cell {
     }
 
     
-
-    public String getInstruction() {
-        return instruction;
-    }
-
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
-
     public boolean isIsReserved() {
         return isReserved;
     }
@@ -69,6 +59,9 @@ public class Cell {
     public void setIsReserved(boolean isReserved) {
         this.isReserved = isReserved;
     }
-     
-    
+
+    @Override
+    public String toString() {
+        return "Cell{" + "name=" + name + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + '}';
+    }
 }

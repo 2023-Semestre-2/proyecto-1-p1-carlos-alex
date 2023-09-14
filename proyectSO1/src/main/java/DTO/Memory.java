@@ -12,7 +12,7 @@ import java.util.List;
  * @author asmal
  */
 public class Memory {
-    private List<Cell> cells = new ArrayList<>();
+    private List<Cell> cellsAll = new ArrayList<>();
     private List<Cell> cellsReserved = new ArrayList<>();
     private Integer reservedMemSize; //se calcula dependiendo del tamano total
     private Integer memorySize; //se configura al iniciar el programa
@@ -23,12 +23,12 @@ public class Memory {
      
     }
 
-    public List<Cell> getCells() {
-        return cells;
+    public List<Cell> getCellsAll() {
+        return cellsAll;
     }
 
-    public void setCells(List<Cell> cells) {
-        this.cells = cells;
+    public void setCellsAll(List<Cell> cellsAll) {
+        this.cellsAll = cellsAll;
     }
 
     public List<Cell> getCellsReserved() {
@@ -64,4 +64,9 @@ public class Memory {
     public void setUserMemSize(Integer userMemSize) {
         this.userMemSize = userMemSize;
     }  
+
+    @Override
+    public String toString() {
+        return "Memory{" + "cellsAll=" + cellsAll + ", cellsReserved=" + cellsReserved + ", reservedMemSize=" + reservedMemSize + ", memorySize=" + memorySize + ", userMemSize=" + userMemSize + '}';
+    }
 }

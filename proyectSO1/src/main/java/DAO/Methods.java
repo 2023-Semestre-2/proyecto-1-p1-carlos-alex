@@ -11,9 +11,7 @@ import DTO.WeightTable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  *
@@ -173,58 +171,54 @@ public class Methods {
         return localFiles;
     }
     
-    public Memory loadMemory(Integer reservedMemSize, Integer memorySize, List<Document> document){
+    
+    private Memory getMemory(Integer reservedMemSize, Integer memorySize){
         int memorySizeTotal = configMemory(memorySize);
         int reservedMemSizeTotal = virtualMemory(reservedMemSize);
         
         Memory memory = new Memory();
-        //validar q la memoria total es mayor a la memoria reservada
-        if(memorySizeTotal>reservedMemSizeTotal){
-            memory.setMemorySize(memorySizeTotal);
-            memory.setReservedMemSize(reservedMemSizeTotal);
-            memory.setUserMemSize(memorySizeTotal-reservedMemSizeTotal);
-            
-            int count = 0;
-            
-            //cantidad de memoria
-            //asignar position de inicio y fin para los archivos
-            int startMem = reservedMemSizeTotal;
-            int userMemSize = memorySizeTotal-reservedMemSizeTotal;
-            
-            
-            List<Cell> cells = new ArrayList<>();
-            for(;count<memorySizeTotal;count++){
-                 //llenar memoria reservada
-                if(count<reservedMemSizeTotal){
-                    //llenamos en dado caso que haya documentos
-                    if(!document.isEmpty()){
-                        Cell cell = new Cell();
-                        cell.setIndex(count);
-                        //llenar el nombre en la memoria reservada
-                        if(count<document.size()){
-                            cell.setName(document.get(count).getName());
-                        }
-                        int countProgram = document.get(count).getNumberLines();
-                        //
-                        if(userMemSize>countProgram){
-                           //
-                           startMem = startMem +2;//para dar un espacio de 2 de programa a programa
-                           
-                           cell.setStartingAddress(startMem);
-                           cell.setEndindAddress(startMem+countProgram);
-                           
-                           startMem = startMem+countProgram;
-                           
-                        }
-                        cell.setIsReserved(true);
-                        cells.add(cell);
-                    }
-                    memory.setCellsReserved(cells);
-                }
-                
-                memory.setCells(cells);
-            }
-        }
+        memory.setMemorySize(memorySizeTotal);//512
+        memory.setReservedMemSize(reservedMemSizeTotal);//64
+        memory.setUserMemSize(memorySizeTotal-reservedMemSizeTotal);//448
+        
         return memory;
     }
+    
+    // Memoria reservada de almacenamiento
+    public Memory loadMemoryReserved(Integer reservedMemSize, Integer memorySize, List<Document> document){
+
+        Memory memory = getMemory(reservedMemSize, memorySize); 
+        //validar si cantidad de archivos es mayor a la memoria reservada
+        if(!document.isEmpty()  && document.size()<memory.getReservedMemSize()){
+            List<Cell> cells = new ArrayList<>();
+            //Si pasa estas condiciones agregamos a la memoria reservada
+            int i=0;
+            int memoryTemp = memory.getUserMemSize();
+            int startUsed = memory.getReservedMemSize();
+            for(; i<document.size(); i++){
+                Cell cell = new Cell();
+                int countProgram = document.get(i).getNumberLines();
+                //validacion para saber si hay memoria de usuario disponible
+                if(countProgram<memoryTemp){
+                    cell.setIndex(i);
+                    cell.setName(document.get(i).getName());
+                    cell.setIsReserved(true);
+                    cell.setStartingAddress(startUsed);
+                    cell.setEndindAddress(startUsed+countProgram);
+                    memoryTemp = memoryTemp - (startUsed+countProgram);
+                    startUsed = (startUsed+countProgram)+1;
+                }
+                if(cell.getIndex()!=null){
+                    cells.add(cell);
+                }
+            }
+            memory.setCellsReserved(cells);
+            memory.setCellsAll(cells);
+        }
+        System.out.print(memory);
+        return memory;
+    }
+    
+    
+    
 }

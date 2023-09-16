@@ -4,6 +4,8 @@
  */
 package DTO;
 
+import java.util.List;
+
 /**
  *
  * @author Caili
@@ -15,7 +17,8 @@ public class Cell {
     private Integer endindAddress;
     private Integer index;
     private boolean isReserved;
-
+    private List<WeightTable> instructions;
+    
     public Cell() {
     }
 
@@ -59,9 +62,17 @@ public class Cell {
     public void setIsReserved(boolean isReserved) {
         this.isReserved = isReserved;
     }
+    
+    public List<WeightTable> getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(List<WeightTable> instructions) {
+        this.instructions = instructions;
+    }
 
     @Override
     public String toString() {
-        return "Cell{" + "name=" + name + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + '}';
+        return "Cell{" + "name=" + name + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + " Program Instruc.."+getInstructions()+'}';
     }
 }

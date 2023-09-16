@@ -42,6 +42,6 @@ public class WeightTable {
 
     @Override
     public String toString() {
-        return "TableBSP{" + "numberLine=" + numberLine + ", instruction=" + instruction + ", weight=" + weight + '}';
+        return "{" + "numberLine=" + numberLine + ", instruction=" + instruction + ", weight=" + weight + '}';
     }
 }

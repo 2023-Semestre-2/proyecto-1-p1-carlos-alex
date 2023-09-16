@@ -185,7 +185,7 @@ public class Methods {
     }
     
     // Memoria reservada de almacenamiento
-    public Memory loadMemoryReserved(Integer reservedMemSize, Integer memorySize, List<Document> document){
+    public Memory loadMemoryReserved(Integer reservedMemSize, Integer memorySize, List<Document> document) throws Exception{
 
         Memory memory = getMemory(reservedMemSize, memorySize); 
         //validar si cantidad de archivos es mayor a la memoria reservada
@@ -211,13 +211,18 @@ public class Methods {
                 if(cell.getIndex()!=null){
                     cells.add(cell);
                 }
+                cell.setInstructions(readFileToTable(document.get(i).getLocation())); //genera un objeto weightTable  con informacion de las instrucciones del programa
             }
+            //Este for se ejecuta x veces, siendo x la cantidad de programas, cada programa setea todas las posiciones y se obtienen sus instrucciones
             memory.setCellsReserved(cells);
             memory.setCellsAll(cells);
         }
-        System.out.print(memory);
+        System.out.println(memory.getCellsAll());
+        System.out.println(memory.getCellsReserved());
         return memory;
     }
+
+
     
     
     

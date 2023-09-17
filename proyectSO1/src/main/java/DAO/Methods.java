@@ -185,7 +185,7 @@ public class Methods {
     }
     
     // Memoria reservada de almacenamiento
-    public Memory loadMemoryReserved(Integer reservedMemSize, Integer memorySize, List<Document> document) throws Exception{
+    public Memory loadMemoryReserved(Integer reservedMemSize, Integer memorySize, List<Document> document) throws Exception{ //mejor que reciba un objeto memory
 
         Memory memory = getMemory(reservedMemSize, memorySize); 
         //validar si cantidad de archivos es mayor a la memoria reservada

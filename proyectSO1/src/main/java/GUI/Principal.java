@@ -4,23 +4,17 @@
  */
 package GUI;
 
+import DAO.Methods;
+import DTO.Document;
 import DTO.Memory;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -31,6 +25,9 @@ public class Principal extends javax.swing.JFrame {
     
     Memory RAM;
     Memory SSD;
+    List<String> routes;
+    List<Document> document;
+    Methods methods = new Methods();
     /**
      * Creates new form Principal
      * @throws java.lang.InterruptedException
@@ -362,16 +359,27 @@ public class Principal extends javax.swing.JFrame {
             // Filtra los tipos de archivos permitidos
             FileNameExtensionFilter filter = new FileNameExtensionFilter("ASM CODE", "asm");
             fileChooser.setFileFilter(filter);
+            fileChooser.setMultiSelectionEnabled(true);
 
-            // Abre el explorador de archivos y espera a que el usuario seleccione un archivo
+            // Abre el explorador de archivos y espera a que el usuario seleccione uno o varios archivos
             int result = fileChooser.showOpenDialog(null);
             if (result == JFileChooser.APPROVE_OPTION) {
-                File archive = fileChooser.getSelectedFile();
-            }
-            else {
-                    String message = "ERROR DE SINTAXIS [DOCUMENTO INVALIDO]";
-                    JOptionPane.showMessageDialog(new JFrame(), message, "ERROR",JOptionPane.ERROR_MESSAGE);
+                File[] selectedFiles = fileChooser.getSelectedFiles();
+                
+                if (selectedFiles.length > 0) {
+                    // Procesa los archivos seleccionados
+                    routes = new ArrayList<>();
+                    for (File archive : selectedFiles) {
+                        routes.add(archive.getAbsolutePath());
+                        System.out.println("Archivo seleccionado: " + archive.getAbsolutePath());
+                        
+                    }
+                    setMemory();
+                } else {
+                    String message = "ERROR DE SINTAXIS [NINGÚN DOCUMENTO SELECCIONADO]";
+                    JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
+            }
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -416,11 +424,13 @@ public class Principal extends javax.swing.JFrame {
         });
     }
     
-    public void setMemory(Memory RAM) {
-       
+    public void setMemory() throws Exception {
+       document = new ArrayList<>();
+       methods.loadFile(routes, document);
+       System.out.println(document);
     }
     
-    public void showSettings() {
+    private void showSettings() {
         Settings dialog = new Settings(this);
         dialog.setVisible(true);
 

@@ -258,6 +258,15 @@ public class Methods {
         }
         return data;
     }
+    
+    public boolean isInt(String str) {
+    try {
+        int numero = Integer.parseInt(str);
+        return true;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+}
 
 
     

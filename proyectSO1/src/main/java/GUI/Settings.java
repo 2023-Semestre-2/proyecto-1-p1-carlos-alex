@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DAO.Methods;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -24,6 +26,8 @@ import javax.swing.JTextField;
 public class Settings extends JDialog{
     private JTextField ssdField;
     private JTextField ramField;
+    private boolean ssdValidated;
+    private boolean ramValidated;
 
     public Settings(JFrame parent) {
         super(parent, "Settings", true);
@@ -61,8 +65,38 @@ public class Settings extends JDialog{
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Coloca aquí la lógica para guardar la configuración
-                dispose(); // Cierra la ventana
+                Methods methods = new Methods();
+                if (!ssdField.getText().equals("")) {
+                    if (methods.isInt(ssdField.getText())) {
+                        validateSizeSSD(ssdField.getText());
+                    }
+                    else {
+                        String message = "ERROR DE CONFIGURACION [VALORES SSD INVALIDOS]";
+                        JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+                        ssdValidated = false;
+                    }
+                }
+                else {
+                    ssdValidated = true;
+                }
+                
+                if (!ramField.getText().equals("")) {
+                    if (methods.isInt(ramField.getText())) {
+                        validateSizeRam(ramField.getText());
+                    }
+                    else {
+                        String message = "ERROR DE CONFIGURACION [VALORES RAM INVALIDOS]";
+                        JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+                        ssdValidated = false;
+                    }
+                }
+                else {
+                    ramValidated = true;
+                }
+                
+                validateMemories();
+                
+                
             }
         });
 
@@ -80,5 +114,31 @@ public class Settings extends JDialog{
 
     public String getRAMValue() {
         return ramField.getText();
+    }
+    public void validateSizeSSD(String num) {
+        if (Integer.parseInt(num)<512) {
+            String message = "ERROR DE CONFIGURACION [SSD>512]";
+            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+            ssdValidated = false;
+        }
+        else {
+            ssdValidated = true;
+        }
+    }
+    
+    public void validateSizeRam(String num) {
+        if (Integer.parseInt(num)<256) {
+            String message = "ERROR DE CONFIGURACION [RAM>256]";
+            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+            ssdValidated = false;
+        }
+        else{
+            ssdValidated = true;
+        }
+    }
+    
+    public void validateMemories() {
+        if (ssdValidated & ramValidated)
+            dispose();
     }
 }

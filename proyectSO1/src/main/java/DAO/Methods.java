@@ -215,11 +215,34 @@ public class Methods {
             }
             //Este for se ejecuta x veces, siendo x la cantidad de programas, cada programa setea todas las posiciones y se obtienen sus instrucciones
             memory.setCellsReserved(cells);
-            memory.setCellsAll(cells);
+            //memory.setCellsAll(cells);
         }
         System.out.println(memory.getCellsAll());
         System.out.println(memory.getCellsReserved());
         return memory;
+    }
+    
+    public String[][] getSSDTable(Memory memory) {
+        String[] cols = {"INDEX", "VALUES"};
+        String[][] data = new String[memory.getMemorySize()][cols.length];
+        List<Cell> cells = memory.getCellsReserved();
+        int cont = cells.size();
+        System.out.println(cont);
+        int j = 0;
+        for(int i = 0; i < memory.getMemorySize(); i++){
+            if (j<cont) {
+                if (cells.get(j).getIndex() == i) {
+                    Cell reservedCell = cells.get(j);
+                    data[i][1] = reservedCell.getName()+","+reservedCell.getStartingAddress()+","+reservedCell.getEndindAddress();
+                    System.out.println(j);
+                    j++;
+                }
+            }
+            data[i][0] = Integer.toString(i);
+            
+            
+        }
+        return data;
     }
 
 

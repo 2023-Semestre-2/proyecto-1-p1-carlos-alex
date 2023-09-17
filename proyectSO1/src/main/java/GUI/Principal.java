@@ -5,17 +5,20 @@
 package GUI;
 
 import DAO.Methods;
+import DTO.Cell;
 import DTO.Document;
 import DTO.Memory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,6 +28,8 @@ public class Principal extends javax.swing.JFrame {
     
     Memory RAM;
     Memory SSD;
+    Integer ramSize = 256;
+    Integer ssdSize = 512;
     List<String> routes;
     List<Document> document;
     Methods methods = new Methods();
@@ -156,7 +161,7 @@ public class Principal extends javax.swing.JFrame {
         );
 
         jTable1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jTable1.setFont(new java.awt.Font("Georgia", 1, 12)); // NOI18N
+        jTable1.setFont(new java.awt.Font("Georgia", 0, 12)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -428,6 +433,20 @@ public class Principal extends javax.swing.JFrame {
        document = new ArrayList<>();
        methods.loadFile(routes, document);
        System.out.println(document);
+       SSD = methods.loadMemoryReserved(ssdSize/8,ssdSize,document);
+       System.out.println(SSD);
+       showSSD(SSD);
+    }
+    
+    public void showSSD(Memory memory)
+    {
+       DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+       String [][] data = methods.getSSDTable(SSD);
+       String[] cols = {"INDEX", "VALUES"};
+
+        
+        
+        model.setDataVector(data, cols);
     }
     
     private void showSettings() {
@@ -440,10 +459,9 @@ public class Principal extends javax.swing.JFrame {
         //System.out.println("Valor RAM: " + ramValue);
 
        
-        SSD = new Memory();
-        RAM = new Memory();
-        Integer ramSize = 256;
-        Integer ssdSize = 512;
+        //SSD = new Memory();
+        //RAM = new Memory();
+        
         if (!ssdValue.equals("")) {
             ramSize = Integer.valueOf(ramValue);
         }
@@ -451,8 +469,8 @@ public class Principal extends javax.swing.JFrame {
             ssdSize = Integer.valueOf(ssdValue);
         }
 
-        SSD.setMemorySize(ssdSize);
-        RAM.setMemorySize(ramSize);
+        //SSD.setMemorySize(ssdSize);
+        //RAM.setMemorySize(ramSize);
         jLabel1.setText("SSD: "+ssdSize.toString()+"kb");
         jLabel2.setText("RAM: "+ramSize.toString()+"kb");
       

@@ -5,12 +5,22 @@
 package GUI;
 
 import DTO.Memory;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -19,7 +29,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Principal extends javax.swing.JFrame {
     
-    Memory memory;
+    Memory RAM;
+    Memory SSD;
     /**
      * Creates new form Principal
      * @throws java.lang.InterruptedException
@@ -28,7 +39,8 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-       
+        showSettings();
+ 
     }
 
     /**
@@ -272,9 +284,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
+                        .addGap(148, 148, 148)
                         .addComponent(jLabel1)
-                        .addGap(380, 380, 380)
+                        .addGap(297, 297, 297)
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -404,8 +416,36 @@ public class Principal extends javax.swing.JFrame {
         });
     }
     
-    public void setMemory(Memory memory) {
-        
+    public void setMemory(Memory RAM) {
+       
+    }
+    
+    public void showSettings() {
+        Settings dialog = new Settings(this);
+        dialog.setVisible(true);
+
+        String ssdValue = dialog.getSSDValue();
+        String ramValue = dialog.getRAMValue();
+        //System.out.println("Valor SSD: " + ssdValue);
+        //System.out.println("Valor RAM: " + ramValue);
+
+       
+        SSD = new Memory();
+        RAM = new Memory();
+        Integer ramSize = 256;
+        Integer ssdSize = 512;
+        if (!ssdValue.equals("")) {
+            ramSize = Integer.valueOf(ramValue);
+        }
+        if (!ramValue.equals("")) {
+            ssdSize = Integer.valueOf(ssdValue);
+        }
+
+        SSD.setMemorySize(ssdSize);
+        RAM.setMemorySize(ramSize);
+        jLabel1.setText("SSD: "+ssdSize.toString()+"kb");
+        jLabel2.setText("RAM: "+ramSize.toString()+"kb");
+      
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

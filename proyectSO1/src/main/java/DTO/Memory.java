@@ -42,6 +42,7 @@ public class Memory {
     
 
     public Integer getReservedMemSize() {
+        
         return reservedMemSize;
     }
 
@@ -55,6 +56,7 @@ public class Memory {
 
     public void setMemorySize(Integer memorySize) {
         this.memorySize = memorySize;
+        setReservedMemSize(memorySize/8); //
     }
 
     public Integer getUserMemSize() {

@@ -30,46 +30,49 @@ public class AnalyticSintax {
                     if(line.contains("MOV") || line.contains("mov")){
                         movError(line,countLines,errors);
                     }
-                    if(line.contains("LOAD") || line.contains("load")){
+                    else if(line.contains("LOAD") || line.contains("load")){
                         loadError(line,countLines, errors);
                     }
-                    if(line.contains("STORE") || line.contains("store")){
+                    else if(line.contains("STORE") || line.contains("store")){
                         storeError(line,countLines, errors);
                     }
-                    if(line.contains("ADD") || line.contains("add")){
+                    else if(line.contains("ADD") || line.contains("add")){
                         addError(line,countLines, errors);
                     }
-                    if(line.contains("SUB") || line.contains("sub")){
+                    else if(line.contains("SUB") || line.contains("sub")){
                         subError(line,countLines, errors);
                     }
-                    if(line.contains("INC") || line.contains("inc")){
+                    else if(line.contains("INC") || line.contains("inc")){
                         incError(line,countLines, errors);
                     }
-                    if(line.contains("DEC") || line.contains("dec")){
+                    else if(line.contains("DEC") || line.contains("dec")){
                         incError(line,countLines, errors);
                     }
-                    if(line.contains("POP") || line.contains("pop")){
+                    else if(line.contains("POP") || line.contains("pop")){
                         popError(line,countLines, errors);
                     }
-                    if(line.contains("PUSH") || line.contains("push")){
+                    else if(line.contains("PUSH") || line.contains("push")){
                         pushError(line,countLines, errors);
                     }
-                    if(line.contains("SWAP") || line.contains("swap")){
+                    else if(line.contains("SWAP") || line.contains("swap")){
                         swapError(line,countLines, errors);
                     }
-                    if(line.contains("JE") || line.contains("je")
+                    else if(line.contains("JE") || line.contains("je")
                             || line.contains("JNE")|| line.contains("jne")
                             || line.contains("JMP")|| line.contains("jmp")){
                         displacementError(line,countLines, errors);
                     }
-                    if(line.contains("CMP") || line.contains("cmp")){
+                    else if(line.contains("CMP") || line.contains("cmp")){
                         cmpError(line,countLines, errors);
                     }
-                    if(line.contains("PARAM") || line.contains("param")){
+                    else if(line.contains("PARAM") || line.contains("param")){
                         paramError(line,countLines, errors);
                     }
-                    if(line.contains("INT") || line.contains("int")){
+                    else if(line.contains("INT") || line.contains("int")){
                         intError(line,countLines, errors);
+                    }else{
+                        ErrorFail e= getGetError(line, "Error de interrupcion. Interrupcion invalida", countLines);
+                        errors.add(e);
                     }
                     countLines ++;
                 }
@@ -228,34 +231,44 @@ public class AnalyticSintax {
     }
             
     public void subError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(" ")){
+        if(line.contains(",")){
+            ErrorFail e= getGetError(line, "Instruction invalid", countLines);
+            errors.add(e);
+        }else{
+            if(!line.contains(" ")){
             ErrorFail e= getGetError(line, "Error no contain registers", countLines);
             errors.add(e);
         }else{
             String[] instr = line.split(" ");
             if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
+                    !instr[1].equalsIgnoreCase("BX")||
+                    !instr[1].equalsIgnoreCase("CX")||
+                    !instr[1].equalsIgnoreCase("DX")){
+                    ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
+                    errors.add(e);
+                }
             }
-        }
+        }  
     }
     
     
     public void addError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(" ")){
+        if(line.contains(",")){
+            ErrorFail e= getGetError(line, "Instruction invalid", countLines);
+            errors.add(e);
+        }else{
+            if(!line.contains(" ")){
             ErrorFail e= getGetError(line, "Error no contain registers", countLines);
             errors.add(e);
         }else{
             String[] instr = line.split(" ");
             if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
+                    !instr[1].equalsIgnoreCase("BX")||
+                    !instr[1].equalsIgnoreCase("CX")||
+                    !instr[1].equalsIgnoreCase("DX")){
+                    ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
+                    errors.add(e);
+                }
             }
         }
     }

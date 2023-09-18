@@ -4,10 +4,12 @@
  */
 package GUI;
 
+import DAO.AnalyticSintax;
 import DAO.Methods;
 import DTO.BCP;
 import DTO.Cell;
 import DTO.Document;
+import DTO.ErrorFail;
 import DTO.Memory;
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +36,7 @@ public class Principal extends javax.swing.JFrame {
     List<String> routes;
     List<Document> document;
     Methods methods = new Methods();
+    AnalyticSintax lexer= new AnalyticSintax();
     List<BCP> bcps = new ArrayList<>();
     /**
      * Creates new form Principal
@@ -397,10 +400,33 @@ public class Principal extends javax.swing.JFrame {
                 if (selectedFiles.length > 0) {
                     // Procesa los archivos seleccionados
                     routes = new ArrayList<>();
+                    String msg = "ERRORS\n";
+                    boolean flag = false;
                     for (File archive : selectedFiles) {
+                        //List<ErrorFail> errors = lexer.getErrors(archive.getAbsolutePath()); // me da error
+                        msg+="Archivo: "+ archive.getName()+"\n";
+                        //System.out.println(errors.size());
+                        /*
+                        for (int i = 0;i<errors.size();i++) {
+                            
+                            if (errors.get(i).isIsError()) {
+                                msg+=" Linea: "+errors.get(i).getNumLine();
+                                msg+=" -> Instruccion: "+errors.get(i).getInstruction();
+                                msg+= " ERROR: "+errors.get(i).getMessage()+"\n";
+                                flag = true;
+                                //System.out.println(msg);
+                            }
+                            System.out.println(i);
+                        }
+                        */
+                        if (flag) {
+                            JOptionPane.showMessageDialog(new JFrame(), msg, "ERROR", JOptionPane.ERROR_MESSAGE);
+                            flag = false;
+                        }
+                        msg = "ERRORS\n";
                         routes.add(archive.getAbsolutePath());
                         System.out.println("Archivo seleccionado: " + archive.getAbsolutePath());
-                        
+                        System.out.println(archive.getName());
                     }
                     setMemory();
                 } else {

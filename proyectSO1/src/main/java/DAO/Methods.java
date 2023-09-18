@@ -263,6 +263,21 @@ public class Methods {
         return data;
     }
     
+    public String[][] getRAMTable(Memory memory, List<BCP> bcps, List<Map> processTable) {
+        String[] cols = {"INDEX", "VALUES"};
+        String[][] data = new String[memory.getMemorySize()][cols.length];
+        List<Cell> cells = memory.getCellsReserved();
+        int cont = cells.size();
+        int reservedIndex = 0;
+        int userIndex = 0;
+        int reservedSize = memory.getReservedMemSize();
+        int processTableSize = processTable.size();
+        for (int i=0;i<memory.getMemorySize();i++) {
+            
+        }
+        return data;
+    }
+    
     public boolean isInt(String str) {
         try {
             int numero = Integer.parseInt(str);

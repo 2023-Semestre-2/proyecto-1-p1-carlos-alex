@@ -18,6 +18,9 @@ import java.util.Scanner;
  * @author Caili
  */
 public class AnalyticSintax {
+
+    public AnalyticSintax() {
+    }
     
     public List<ErrorFail> getErrors(String location) throws FileNotFoundException{
         List<ErrorFail> errors = new ArrayList<>();

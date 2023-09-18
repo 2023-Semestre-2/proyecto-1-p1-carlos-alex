@@ -39,7 +39,7 @@ public class Settings extends JDialog{
         // Configurar el diseño
         setLayout(new BorderLayout());
         JLabel title = new JLabel();
-        title.setText("Settings");
+        title.setText("Settings Menu");
 
         JPanel inputPanel = new JPanel(new GridLayout(6, 2));
         JLabel ssdLabel = new JLabel("SSD:");
@@ -47,13 +47,16 @@ public class Settings extends JDialog{
         ssdField.setSize(60, 30);
         JLabel ramLabel = new JLabel("RAM:");
         ramField = new JTextField();
+        JLabel msg = new JLabel();
+        msg.setText("Para utilizar la configuracion DEFAULT deje los espacios en blanco y presione [SAVE]");
         inputPanel.add(title);
         inputPanel.add(ssdLabel);
         inputPanel.add(ssdField);
         inputPanel.add(ramLabel);
         inputPanel.add(ramField);
+        inputPanel.add(msg);
 
-        JButton loadButton = new JButton("Load Conf File");
+        JButton loadButton = new JButton("Load Config File");
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,46 +65,45 @@ public class Settings extends JDialog{
         });
 
         JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(new ActionListener() { 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Methods methods = new Methods();
-                if (!ssdField.getText().equals("")) {
-                    if (methods.isInt(ssdField.getText())) {
-                        validateSizeSSD(ssdField.getText());
-                    }
-                    else {
-                        String message = "ERROR DE CONFIGURACION [VALORES SSD INVALIDOS]";
-                        JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
-                        ssdValidated = false;
-                    }
+        saveButton.addActionListener((ActionEvent e) -> {
+            Methods methods = new Methods();
+            if (!ssdField.getText().equals("")) {
+                if (methods.isInt(ssdField.getText())) {
+                    validateSizeSSD(ssdField.getText());
                 }
                 else {
-                    ssdValidated = true;
+                    String message = "ERROR DE CONFIGURACION [VALORES SSD INVALIDOS]";
+                    JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    ssdValidated = false;
                 }
-                
-                if (!ramField.getText().equals("")) {
-                    if (methods.isInt(ramField.getText())) {
-                        validateSizeRam(ramField.getText());
-                    }
-                    else {
-                        String message = "ERROR DE CONFIGURACION [VALORES RAM INVALIDOS]";
-                        JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
-                        ssdValidated = false;
-                    }
-                }
-                else {
-                    ramValidated = true;
-                }
-                validateMemories();
             }
+            else {
+                ssdValidated = true;
+            }
+            
+            if (!ramField.getText().equals("")) {
+                if (methods.isInt(ramField.getText())) {
+                    validateSizeRam(ramField.getText());
+                }
+                else {
+                    String message = "ERROR DE CONFIGURACION [VALORES RAM INVALIDOS]";
+                    JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    ssdValidated = false;
+                }
+            }
+            else {
+                ramValidated = true;
+            }
+            validateMemories();
         });
 
         // Agregar componentes al diálogo
+        
         add(inputPanel, BorderLayout.CENTER);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(loadButton);
         buttonPanel.add(saveButton);
+        
         add(buttonPanel, BorderLayout.SOUTH);
     }
 

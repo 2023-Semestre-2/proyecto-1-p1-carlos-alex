@@ -13,6 +13,7 @@ import java.util.List;
 public class Cell {
     
     private String name;
+    private String location;
     private Integer startingAddress;
     private Integer endindAddress;
     private Integer index;
@@ -29,6 +30,16 @@ public class Cell {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    
+    
 
     public Integer getStartingAddress() {
         return startingAddress;
@@ -73,6 +84,6 @@ public class Cell {
 
     @Override
     public String toString() {
-        return "Cell{" + "name=" + name + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + " Program Instruc.."+getInstructions()+'}';
+        return "Cell{" + "name=" + name + ", location=" + location + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + ", instructions=" + instructions + '}';
     }
 }

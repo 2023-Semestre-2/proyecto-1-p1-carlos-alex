@@ -189,6 +189,8 @@ public class Methods {
         return memory;
     }
     
+  
+    
     // Memoria reservada de almacenamiento
     public Memory loadMemoryReserved(Integer reservedMemSize, Integer memorySize, List<Document> document) throws Exception{ //mejor que reciba un objeto memory
 
@@ -207,6 +209,7 @@ public class Methods {
                 if(countProgram<memoryTemp){
                     cell.setIndex(i);
                     cell.setName(document.get(i).getName());
+                    cell.setLocation(document.get(i).getLocation());
                     cell.setIsReserved(true);
                     cell.setStartingAddress(startUsed);
                     cell.setEndindAddress(startUsed+countProgram);
@@ -225,6 +228,50 @@ public class Methods {
         System.out.println(memory.getCellsAll());
         System.out.println(memory.getCellsReserved());
         return memory;
+    }
+    
+    public Memory loadMemoryPrincipal(Integer reservedMemSize, Integer memorySize, Memory ssdMemory) throws Exception{
+        Memory newMemory = new Memory();
+        List<Cell> cells = new ArrayList<>();
+        
+        int reservedMemory = reservedMemSize;
+        int totalMemory = memorySize;
+        int spaceMemory = totalMemory-reservedMemory;
+        
+        int i=0;
+        
+        if(spaceMemory>0){
+            for(; i<ssdMemory.getCellsReserved().size(); i++){
+                Cell cell = new Cell();
+                int countProgram =  countNumber(ssdMemory.getCellsReserved().get(i).getStartingAddress(), ssdMemory.getCellsReserved().get(i).getEndindAddress());
+                //validacion para saber si hay memoria de usuario disponible
+                if(countProgram<spaceMemory){
+                    cell.setIndex(i);
+                    cell.setName(ssdMemory.getCellsReserved().get(i).getName());
+                    cell.setIsReserved(false);
+                    cell.setStartingAddress(reservedMemory);
+                    cell.setEndindAddress(reservedMemory+countProgram);
+                    spaceMemory = spaceMemory - (reservedMemory+countProgram);
+                    reservedMemory = (reservedMemory+countProgram)+1;
+                }
+                if(cell.getIndex()!=null){
+                    cells.add(cell);
+                }
+                cell.setInstructions(readFileToTable(ssdMemory.getCellsReserved().get(i).getLocation()));
+            }
+            newMemory.setCellsNoReserved(cells);
+        }
+        System.out.println(newMemory.getCellsAll());
+        System.out.println(newMemory.getCellsNoReserved());
+        return newMemory;
+    }
+    
+    private int countNumber(int start, int finish){
+        int count = 0;
+        for(; start<finish; start++){
+            count= count+1;
+        }
+        return count; 
     }
     
     public String[][] getSSDTable(Memory memory) {

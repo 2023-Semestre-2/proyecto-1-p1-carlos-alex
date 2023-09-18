@@ -14,6 +14,7 @@ import java.util.List;
 public class Memory {
     private List<Cell> cellsAll = new ArrayList<>();
     private List<Cell> cellsReserved = new ArrayList<>();
+    private List<Cell> cellsNoReserved = new ArrayList<>();
     private Integer reservedMemSize; //se calcula dependiendo del tamano total
     private Integer memorySize; //se configura al iniciar el programa
     private Integer userMemSize; //memorySize-reservedSize
@@ -68,8 +69,17 @@ public class Memory {
         this.userMemSize = userMemSize;
     }  
 
+    public List<Cell> getCellsNoReserved() {
+        return cellsNoReserved;
+    }
+
+    public void setCellsNoReserved(List<Cell> cellsNoReserved) {
+        this.cellsNoReserved = cellsNoReserved;
+    }
+
     @Override
     public String toString() {
-        return "Memory{" + "cellsAll=" + cellsAll + ", cellsReserved=" + cellsReserved + ", reservedMemSize=" + reservedMemSize + ", memorySize=" + memorySize + ", userMemSize=" + userMemSize + '}';
+        return "Memory{" + "cellsAll=" + cellsAll + ", cellsReserved=" + cellsReserved + ", cellsNoReserved=" + cellsNoReserved + ", reservedMemSize=" + reservedMemSize + ", memorySize=" + memorySize + ", userMemSize=" + userMemSize + '}';
     }
+    
 }

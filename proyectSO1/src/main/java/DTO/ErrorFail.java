@@ -8,14 +8,23 @@ package DTO;
  *
  * @author Caili
  */
-public class Error {
+public class ErrorFail {
     private int numLine;
     private String instruction;
     private String message;
     private boolean isError;
 
-    public Error() {
+    public ErrorFail() {
     }
+
+    public ErrorFail(int numLine, String instruction, String message, boolean isError) {
+        this.numLine = numLine;
+        this.instruction = instruction;
+        this.message = message;
+        this.isError = isError;
+    }
+    
+    
 
     public int getNumLine() {
         return numLine;

@@ -62,7 +62,7 @@ public class Settings extends JDialog{
         });
 
         JButton saveButton = new JButton("Save");
-        saveButton.addActionListener(new ActionListener() {
+        saveButton.addActionListener(new ActionListener() { 
             @Override
             public void actionPerformed(ActionEvent e) {
                 Methods methods = new Methods();
@@ -93,10 +93,7 @@ public class Settings extends JDialog{
                 else {
                     ramValidated = true;
                 }
-                
                 validateMemories();
-                
-                
             }
         });
 

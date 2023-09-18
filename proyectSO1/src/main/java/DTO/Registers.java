@@ -15,13 +15,13 @@ public class Registers {
     Map<String, String> register = new HashMap<>();
 
     public Registers() {
-        register.put("AX", "");
-        register.put("BX", "");
-        register.put("CX", "");
-        register.put("DX", "");
-        register.put("AC", "");
-        register.put("PC", "");
-        register.put("IR", "");
+        register.put("AX", "0");
+        register.put("BX", "0");
+        register.put("CX", "0");
+        register.put("DX", "0");
+        register.put("AC", "0");
+        register.put("PC", "0");
+        register.put("IR", "0");
         register.put("FLAG", "false");
     }
 

@@ -4,14 +4,19 @@
  */
 package DAO;
 
+import DTO.BCP;
 import DTO.Cell;
 import DTO.Document;
 import DTO.Memory;
+import DTO.Registers;
 import DTO.WeightTable;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  *
@@ -253,21 +258,54 @@ public class Methods {
             }
             
             data[i][0] = Integer.toString(i);
-            
-            
+ 
         }
         return data;
     }
     
     public boolean isInt(String str) {
-    try {
-        int numero = Integer.parseInt(str);
-        return true;
-    } catch (NumberFormatException e) {
-        return false;
+        try {
+            int numero = Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
-}
-
+    
+    
+    //metodo que resiva la memoria SSD, obtenga los 5 programas cargados, los cargue en la memoria de usuario, llame a otro metodo para generar el BCP de cada uno
+    public List<Map> getProcessTable(Memory SSD) { 
+        List<Cell> cells = SSD.getCellsReserved();
+        Map<String, String> program = new HashMap<>();
+        List<Map> processTable = new ArrayList<>();
+        int size = cells.size();
+        
+        for (int i=0;i<size;i++) {
+            program.put("Name", cells.get(i).getName());
+            program.put("State", "Nuevo");
+            processTable.add(program);
+        }
+        
+        return processTable;
+    }
+    
+    public BCP createBCP(Cell cell, Integer CPU, Integer NextBCP) {
+        BCP bcp = new BCP();
+        bcp.setState("Listo");
+        Registers registers = new Registers();
+        Stack stack = new Stack();
+        bcp.setStack(stack);
+        bcp.setProgramRegisters(registers);
+        bcp.setPC(Integer.toString(CPU));
+        bcp.setNextBCPAdress(Integer.toString(NextBCP));
+        int programSize = cell.getEndindAddress()-cell.getStartingAddress();
+        bcp.setAddressCPU(Integer.toString(cell.getStartingAddress()));
+        bcp.setEndingAdress(Integer.toString(programSize));
+        bcp.setPriority("Normal");
+        bcp.setSize(18);
+        bcp.setProgramName(cell.getName());
+        return bcp;  
+    }
 
     
     

@@ -5,6 +5,7 @@
 package GUI;
 
 import DAO.Methods;
+import DTO.BCP;
 import DTO.Cell;
 import DTO.Document;
 import DTO.Memory;
@@ -33,6 +34,7 @@ public class Principal extends javax.swing.JFrame {
     List<String> routes;
     List<Document> document;
     Methods methods = new Methods();
+    List<BCP> bcps = new ArrayList<>();
     /**
      * Creates new form Principal
      * @throws java.lang.InterruptedException
@@ -42,6 +44,7 @@ public class Principal extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         showSettings();
+        
  
     }
 
@@ -146,24 +149,19 @@ public class Principal extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel5)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,7 +242,7 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "INDEX", "STATE"
+                "NAME", "STATE"
             }
         ) {
             Class[] types = new Class [] {
@@ -472,6 +470,7 @@ public class Principal extends javax.swing.JFrame {
         
         
         model.setDataVector(data, cols);
+        showProcessTable();
     }
     
     private void showSettings() {
@@ -502,6 +501,40 @@ public class Principal extends javax.swing.JFrame {
         jLabel6.setText("RAM Reserved Memory 0 -> "+ramSize/8+"kb");
                 
       
+    }
+    
+    public void showProcessTable() {
+        List<Map> processTable = methods.getProcessTable(SSD);
+        int size = processTable.size();
+        String[] cols = {"INDEX", "STATE"};
+        String[][] data = new String[size][cols.length];
+        System.out.println(processTable);
+        
+        for (int i=0;i<size;i++) {
+            data[i][0] = (String) processTable.get(i).get("Name");
+            data[i][1] = (String) processTable.get(i).get("State");
+        }
+        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+        model.setDataVector(data, cols);
+        getBCP();
+        
+    }
+    
+    public void getBCP() {
+        List<Cell> programs = SSD.getCellsReserved();
+        int nextBCP;
+        for (int i = 0;i<programs.size();i++) {
+            
+            if (i+1 == programs.size()) {
+                nextBCP = 0;
+            }
+            else {
+                nextBCP = programs.get(i+1).getStartingAddress();
+            }
+            BCP bcp = methods.createBCP(programs.get(i), i, nextBCP);
+            bcps.add(bcp);
+        }
+        System.out.println(bcps);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

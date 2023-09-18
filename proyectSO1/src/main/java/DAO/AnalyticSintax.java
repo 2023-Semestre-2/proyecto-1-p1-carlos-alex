@@ -120,21 +120,18 @@ public class AnalyticSintax {
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
-            
-            if(!reg[0].equalsIgnoreCase("AX")||
+            if(!isNumeric(reg[1])){
+                if(!reg[0].equalsIgnoreCase("AX")||
                 !reg[0].equalsIgnoreCase("BX")||
                 !reg[0].equalsIgnoreCase("CX")||
-                !reg[0].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-                if(!reg[1].equalsIgnoreCase("AX")||
+                !reg[0].equalsIgnoreCase("DX")||
+                !reg[1].equalsIgnoreCase("AX")||
                 !reg[1].equalsIgnoreCase("BX")||
                 !reg[1].equalsIgnoreCase("CX")||
-                !reg[1].equalsIgnoreCase("DX")||
-                !isNumeric(reg[1])){
+                !reg[1].equalsIgnoreCase("DX")){
                 ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
                 errors.add(e);
+                }
             }
         } 
     }
@@ -155,21 +152,18 @@ public class AnalyticSintax {
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
-            
-            if(!reg[0].equalsIgnoreCase("AX")||
+            if(!isNumeric(reg[1])){
+                if(!reg[0].equalsIgnoreCase("AX")||
                 !reg[0].equalsIgnoreCase("BX")||
                 !reg[0].equalsIgnoreCase("CX")||
-                !reg[0].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-                if(!reg[1].equalsIgnoreCase("AX")||
+                !reg[0].equalsIgnoreCase("DX")||
+                !reg[1].equalsIgnoreCase("AX")||
                 !reg[1].equalsIgnoreCase("BX")||
                 !reg[1].equalsIgnoreCase("CX")||
-                !reg[1].equalsIgnoreCase("DX")||
-                !isNumeric(reg[1])){
+                !reg[1].equalsIgnoreCase("DX")){
                 ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
                 errors.add(e);
+                }
             }
         }
     }
@@ -307,21 +301,18 @@ public class AnalyticSintax {
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
-            
-            if(!reg[0].equalsIgnoreCase("AX")||
+            if(!isNumeric(reg[1])){
+                if(!reg[0].equalsIgnoreCase("AX")||
                 !reg[0].equalsIgnoreCase("BX")||
                 !reg[0].equalsIgnoreCase("CX")||
-                !reg[0].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-                if(!reg[1].equalsIgnoreCase("AX")||
+                !reg[0].equalsIgnoreCase("DX")||
+                !reg[1].equalsIgnoreCase("AX")||
                 !reg[1].equalsIgnoreCase("BX")||
                 !reg[1].equalsIgnoreCase("CX")||
-                !reg[1].equalsIgnoreCase("DX")||
-                !isNumeric(reg[1])){
+                !reg[1].equalsIgnoreCase("DX")){
                 ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
                 errors.add(e);
+                }
             }
         }
     }

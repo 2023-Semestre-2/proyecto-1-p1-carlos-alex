@@ -5,6 +5,7 @@ import DTO.ErrorFail;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,31 +35,31 @@ public class AnalyticSintax {
                         movError(line,countLines,errors);
                     }
                     else if(line.contains("LOAD") || line.contains("load")){
-                        loadError(line,countLines, errors);
+                        storeLoadError(line,countLines, errors);
                     }
                     else if(line.contains("STORE") || line.contains("store")){
-                        storeError(line,countLines, errors);
+                        storeLoadError(line,countLines, errors);
                     }
                     else if(line.contains("ADD") || line.contains("add")){
-                        addError(line,countLines, errors);
+                        addSubError(line,countLines, errors);
                     }
                     else if(line.contains("SUB") || line.contains("sub")){
-                        subError(line,countLines, errors);
+                        addSubError(line,countLines, errors);
                     }
                     else if(line.contains("INC") || line.contains("inc")){
-                        incError(line,countLines, errors);
+                        incDecError(line,countLines, errors);
                     }
                     else if(line.contains("DEC") || line.contains("dec")){
-                        incError(line,countLines, errors);
+                        incDecError(line,countLines, errors);
                     }
                     else if(line.contains("POP") || line.contains("pop")){
-                        popError(line,countLines, errors);
+                        pushPopError(line,countLines, errors);
                     }
                     else if(line.contains("PUSH") || line.contains("push")){
-                        pushError(line,countLines, errors);
+                        pushPopError(line,countLines, errors);
                     }
                     else if(line.contains("SWAP") || line.contains("swap")){
-                        swapError(line,countLines, errors);
+                        swapCmpError(line,countLines, errors);
                     }
                     else if(line.contains("JE") || line.contains("je")
                             || line.contains("JNE")|| line.contains("jne")
@@ -66,7 +67,7 @@ public class AnalyticSintax {
                         displacementError(line,countLines, errors);
                     }
                     else if(line.contains("CMP") || line.contains("cmp")){
-                        cmpError(line,countLines, errors);
+                        swapCmpError(line,countLines, errors);
                     }
                     else if(line.contains("PARAM") || line.contains("param")){
                         paramError(line,countLines, errors);
@@ -91,8 +92,7 @@ public class AnalyticSintax {
         && !instr[1].equalsIgnoreCase("10H")
         && !instr[1].equalsIgnoreCase("09H")
         && !instr[1].equalsIgnoreCase("21H")){
-            ErrorFail e= getGetError(line, "Error de interrupcion. Interrupcion no invalido", countLines);
-            errors.add(e);
+            sendMessageError(line, countLines, errors, "Error de interrupcion. Interrupcion no invalido");
         }
     }
     
@@ -100,240 +100,145 @@ public class AnalyticSintax {
         if(!line.contains(",")){
             String[] instr = line.split(" ");
             if(!isNumeric(instr[1])){
-                ErrorFail e= getGetError(line, "Error de parametrizacion de pila. Registro invalido", countLines);
-                errors.add(e);
+                sendMessageError(line, countLines, errors, "Error de parametrizacion de pila. Registro invalido");
             }
         }else{
             String[] instr = line.split(" ");          
             String [] reg = instr[1].split(",");
             int countNotNumber = 0;
+            int countNumber = 0;
             for (String reg1 : reg) {
                 if (!isNumeric(reg1)) {
-                        countNotNumber++;
+                    countNotNumber++;
                 }
+                countNumber++;
             }
             if(countNotNumber>0){
-                ErrorFail e= getGetError(line, "Error de parametrizacion de pila. Registro invalido", countLines);
-                errors.add(e);
+                sendMessageError(line, countLines, errors, "Error de parametrizacion de pila. Registro invalido");
+            }
+            if(countNumber>3){
+                sendMessageError(line, countLines, errors, "Error de parametrizacion de pila, maximo 3 valores numericos. Registro invalido");
             }
         }
-    }
-    
-    public void cmpError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(",")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            String [] reg = instr[1].split(",");
-            if(!isNumeric(reg[1])){
-                if(!reg[0].equalsIgnoreCase("AX")||
-                !reg[0].equalsIgnoreCase("BX")||
-                !reg[0].equalsIgnoreCase("CX")||
-                !reg[0].equalsIgnoreCase("DX")||
-                !reg[1].equalsIgnoreCase("AX")||
-                !reg[1].equalsIgnoreCase("BX")||
-                !reg[1].equalsIgnoreCase("CX")||
-                !reg[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-                }
-            }
-        } 
     }
     
     public void displacementError(String line, int countLines, List<ErrorFail> errors){
         String[] instr = line.split(" ");
         boolean isValue = isNumeric(instr[1]);
         if(!isValue){
-            ErrorFail e= getGetError(line, "Error de desplazamiento. Registro invalido", countLines);
-            errors.add(e);
+            sendMessageError(line, countLines, errors, "Error de desplazamiento. Registro invalido");
         }
     }
     
-    public void swapError(String line, int countLines, List<ErrorFail> errors){
+    public void swapCmpError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
+            sendMessageError(line, countLines, errors, "Error no contain registers");
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
+            String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
+
+            if(isNumeric(reg[0])){
+                sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+            }
+            if(!isNumeric(reg[0])){
+                boolean found = Arrays.asList(values).contains(reg[0]);
+                if(found==false){
+                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                }
+            }
+            if(isNumeric(reg[1])){
+                sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+            }
             if(!isNumeric(reg[1])){
-                if(!reg[0].equalsIgnoreCase("AX")||
-                !reg[0].equalsIgnoreCase("BX")||
-                !reg[0].equalsIgnoreCase("CX")||
-                !reg[0].equalsIgnoreCase("DX")||
-                !reg[1].equalsIgnoreCase("AX")||
-                !reg[1].equalsIgnoreCase("BX")||
-                !reg[1].equalsIgnoreCase("CX")||
-                !reg[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
+                boolean found = Arrays.asList(values).contains(reg[1]);
+                if(found==false){
+                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
                 }
             }
         }
     }
     
     
-    public void pushError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(" ")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-        }
+    public void pushPopError(String line, int countLines, List<ErrorFail> errors){
+        generic(line, countLines,errors); 
     }
-    
-    public void popError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(" ")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-        }
-    }
-    
-    public void decError(String line, int countLines, List<ErrorFail> errors){
+        
+    public void incDecError(String line, int countLines, List<ErrorFail> errors){
         if(line.contains(" ")){
            String[] instr = line.split(" ");
-           if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-        }
-    }
-    
-    public void incError(String line, int countLines, List<ErrorFail> errors){
-        if(line.contains(" ")){
-           String[] instr = line.split(" ");
-           if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
+           String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
+            if(!isNumeric(instr[1])){
+                boolean found = Arrays.asList(values).contains(instr[1]);
+                if(found==false){
+                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                }
+            }else{
+                sendMessageError(line, countLines, errors, "Error registro invalido no puede ser numerico. Valor invalido");
             }
         }
     }
             
-    public void subError(String line, int countLines, List<ErrorFail> errors){
-        if(line.contains(",")){
-            ErrorFail e= getGetError(line, "Instruction invalid", countLines);
-            errors.add(e);
-        }else{
-            if(!line.contains(" ")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            if(!instr[1].equalsIgnoreCase("AX")||
-                    !instr[1].equalsIgnoreCase("BX")||
-                    !instr[1].equalsIgnoreCase("CX")||
-                    !instr[1].equalsIgnoreCase("DX")){
-                    ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                    errors.add(e);
-                }
-            }
-        }  
+    public void addSubError(String line, int countLines, List<ErrorFail> errors){
+        generic(line, countLines,errors); 
     }
     
     
-    public void addError(String line, int countLines, List<ErrorFail> errors){
-        if(line.contains(",")){
-            ErrorFail e= getGetError(line, "Instruction invalid", countLines);
-            errors.add(e);
-        }else{
-            if(!line.contains(" ")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            if(!instr[1].equalsIgnoreCase("AX")||
-                    !instr[1].equalsIgnoreCase("BX")||
-                    !instr[1].equalsIgnoreCase("CX")||
-                    !instr[1].equalsIgnoreCase("DX")){
-                    ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                    errors.add(e);
-                }
-            }
-        }
-    }
-    
-   
-    public void storeError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(" ")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-        }
-    }
-    
-    
-    public void loadError(String line, int countLines, List<ErrorFail> errors){
-        if(!line.contains(" ")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
-        }else{
-            String[] instr = line.split(" ");
-            if(!instr[1].equalsIgnoreCase("AX")||
-                !instr[1].equalsIgnoreCase("BX")||
-                !instr[1].equalsIgnoreCase("CX")||
-                !instr[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
-            }
-        }
+    public void storeLoadError(String line, int countLines, List<ErrorFail> errors){
+        generic(line, countLines,errors);
     }
     
     public void movError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
-            ErrorFail e= getGetError(line, "Error no contain registers", countLines);
-            errors.add(e);
+            sendMessageError(line, countLines, errors, "Error no contain registers");
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
+            String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
+            
+            if(isNumeric(reg[0])){
+                sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+            }
+            if(!isNumeric(reg[0])){
+                boolean found = Arrays.asList(values).contains(reg[0]);
+                if(found==false){
+                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                }
+            }
             if(!isNumeric(reg[1])){
-                if(!reg[0].equalsIgnoreCase("AX")||
-                !reg[0].equalsIgnoreCase("BX")||
-                !reg[0].equalsIgnoreCase("CX")||
-                !reg[0].equalsIgnoreCase("DX")||
-                !reg[1].equalsIgnoreCase("AX")||
-                !reg[1].equalsIgnoreCase("BX")||
-                !reg[1].equalsIgnoreCase("CX")||
-                !reg[1].equalsIgnoreCase("DX")){
-                ErrorFail e= getGetError(line, "Error registro invalido. Valor invalido", countLines);
-                errors.add(e);
+                boolean found = Arrays.asList(values).contains(reg[1]);
+                if(found==false){
+                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
                 }
             }
         }
     }
     
+    private void generic(String line, int countLines, List<ErrorFail> errors){
+        if(!line.contains(" ")){ 
+            sendMessageError(line, countLines, errors, "Error no contain registers");
+        }
+        else if(line.contains(",")){
+            sendMessageError(line, countLines, errors, "Instruction invalid");
+        }
+        else{
+            String[] instr = line.split(" ");
+            if(!isNumeric(instr[1])){
+                String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
+                boolean found = Arrays.asList(values).contains(instr[1]);
+                if(found==false){
+                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                }
+            }else{
+                sendMessageError(line, countLines, errors, "Instruction invalid");
+            }
+        } 
+    }
     
+    private void sendMessageError(String line, int countLines, List<ErrorFail> errors, String message){
+        ErrorFail e= getGetError(line, message, countLines);
+        errors.add(e);
+    }
     private ErrorFail getGetError(String line, String message, int countLines){
         ErrorFail error = new ErrorFail();
         error.setIsError(true);

@@ -403,22 +403,20 @@ public class Principal extends javax.swing.JFrame {
                     String msg = "ERRORS\n";
                     boolean flag = false;
                     for (File archive : selectedFiles) {
-                        //List<ErrorFail> errors = lexer.getErrors(archive.getAbsolutePath()); // me da error
+                        List<ErrorFail> errors = lexer.getErrors(archive.getAbsolutePath());
                         msg+="Archivo: "+ archive.getName()+"\n";
-                        //System.out.println(errors.size());
-                        /*
+                        
                         for (int i = 0;i<errors.size();i++) {
                             
                             if (errors.get(i).isIsError()) {
                                 msg+=" Linea: "+errors.get(i).getNumLine();
-                                msg+=" -> Instruccion: "+errors.get(i).getInstruction();
-                                msg+= " ERROR: "+errors.get(i).getMessage()+"\n";
+                                msg+=" => "+errors.get(i).getInstruction();
+                                msg+= " | "+errors.get(i).getMessage()+"\n";
                                 flag = true;
-                                //System.out.println(msg);
                             }
                             System.out.println(i);
                         }
-                        */
+                        
                         if (flag) {
                             JOptionPane.showMessageDialog(new JFrame(), msg, "ERROR", JOptionPane.ERROR_MESSAGE);
                             flag = false;

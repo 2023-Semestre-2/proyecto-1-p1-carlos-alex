@@ -75,7 +75,7 @@ public class AnalyticSintax {
                     else if(line.contains("INT") || line.contains("int")){
                         intError(line,countLines, errors);
                     }else{
-                        ErrorFail e= getGetError(line, "Error de interrupcion. Interrupcion invalida", countLines);
+                        ErrorFail e= getGetError(line, "[ERROR] => [INSTRUCCION INVALIDA]", countLines);
                         errors.add(e);
                     }
                     countLines ++;
@@ -92,7 +92,7 @@ public class AnalyticSintax {
         && !instr[1].equalsIgnoreCase("10H")
         && !instr[1].equalsIgnoreCase("09H")
         && !instr[1].equalsIgnoreCase("21H")){
-            sendMessageError(line, countLines, errors, "Error de interrupcion. Interrupcion no invalido");
+            sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
         }
     }
     
@@ -100,7 +100,7 @@ public class AnalyticSintax {
         if(!line.contains(",")){
             String[] instr = line.split(" ");
             if(!isNumeric(instr[1])){
-                sendMessageError(line, countLines, errors, "Error de parametrizacion de pila. Registro invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [REGISTRO INVALIDO EN PARAMETRIZACION DE PILA]");
             }
         }else{
             String[] instr = line.split(" ");          
@@ -114,10 +114,10 @@ public class AnalyticSintax {
                 countNumber++;
             }
             if(countNotNumber>0){
-                sendMessageError(line, countLines, errors, "Error de parametrizacion de pila. Registro invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [REGISTRO INVALIDO EN PARAMETRIZACION DE PILA]");
             }
             if(countNumber>3){
-                sendMessageError(line, countLines, errors, "Error de parametrizacion de pila, maximo 3 valores numericos. Registro invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [VIOLACION DE LIMITE DE PARAMETROS]");
             }
         }
     }
@@ -132,7 +132,7 @@ public class AnalyticSintax {
     
     public void swapCmpError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
-            sendMessageError(line, countLines, errors, "Error no contain registers");
+            sendMessageError(line, countLines, errors, "[ERROR] => [FALTA DE REGISTROS VALIDOS]");
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");

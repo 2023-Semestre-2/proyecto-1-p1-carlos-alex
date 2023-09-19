@@ -5,3 +5,4 @@ ADD BX
 SUB AX
 STORE AX
 MOV BX,-8
+asd

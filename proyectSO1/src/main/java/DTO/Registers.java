@@ -20,6 +20,8 @@ public class Registers {
         register.put("CX", "0");
         register.put("DX", "0");
         register.put("AC", "0");
+        register.put("AH", "0");
+        register.put("AL", "0");
         register.put("PC", "0");
         register.put("IR", "0");
         register.put("FLAG", "false");

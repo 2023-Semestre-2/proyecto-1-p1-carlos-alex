@@ -313,12 +313,15 @@ public class Methods {
         String[] cols = {"INDEX", "VALUES"};
         String[][] data = new String[memory.getMemorySize()][cols.length];
         List<Cell> cells = memory.getCellsReserved();
+        List<Cell> cellsNT = memory.getCellsNoReserved();
+        int contNT = cellsNT.size();
         int cont = cells.size();
         int rI = 0;
         int userIndex = 0;
         int reservedSize = memory.getReservedMemSize();
         int cellsSize = cells.size();
         int contProgram = 0;
+        int instructionIndex = 0;
         for (int i=0;i<memory.getMemorySize();i++) {
             if (i<reservedSize) {
                 for (int j=0;j<cells.size();j++) {
@@ -345,9 +348,16 @@ public class Methods {
                 }
             }
             else {
-                if (contProgram<cellsSize) {
-                    List<Cell> cellsNT = memory.getCellsNoReserved();
-                    //int cont = cellsNT.get(contProgram)
+                
+                if (contProgram<contNT) {
+                    int starting = cellsNT.get(contProgram).getStartingAddress();
+                    int ending = cellsNT.get(contProgram).getEndindAddress();
+                    if (i >=starting & i<ending) {
+                        data[i][1] = cellsNT.get(contProgram).getInstructions().get(i-starting).getInstruction();
+                    }
+                    else {
+                        contProgram++;
+                    }
                 }
                 
             }

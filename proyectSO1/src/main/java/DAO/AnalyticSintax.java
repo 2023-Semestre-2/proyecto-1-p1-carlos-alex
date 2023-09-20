@@ -126,7 +126,7 @@ public class AnalyticSintax {
         String[] instr = line.split(" ");
         boolean isValue = isNumeric(instr[1]);
         if(!isValue){
-            sendMessageError(line, countLines, errors, "Error de desplazamiento. Registro invalido");
+            sendMessageError(line, countLines, errors, "[ERROR] => [DESPLAZAMIENTO]");
         }
     }
     
@@ -139,21 +139,21 @@ public class AnalyticSintax {
             String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
 
             if(isNumeric(reg[0])){
-                sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
             }
             if(!isNumeric(reg[0])){
                 boolean found = Arrays.asList(values).contains(reg[0]);
                 if(found==false){
-                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
                 }
             }
             if(isNumeric(reg[1])){
-                sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
             }
             if(!isNumeric(reg[1])){
                 boolean found = Arrays.asList(values).contains(reg[1]);
                 if(found==false){
-                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
                 }
             }
         }
@@ -171,10 +171,10 @@ public class AnalyticSintax {
             if(!isNumeric(instr[1])){
                 boolean found = Arrays.asList(values).contains(instr[1]);
                 if(found==false){
-                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
                 }
             }else{
-                sendMessageError(line, countLines, errors, "Error registro invalido no puede ser numerico. Valor invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA, ONLY STRING NO PERMIT NUMBER]");
             }
         }
     }
@@ -190,25 +190,25 @@ public class AnalyticSintax {
     
     public void movError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
-            sendMessageError(line, countLines, errors, "Error no contain registers");
+            sendMessageError(line, countLines, errors, "[ERROR] => [NO CONTAIN REGISTERS]");
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
             String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
             
             if(isNumeric(reg[0])){
-                sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
             }
             if(!isNumeric(reg[0])){
                 boolean found = Arrays.asList(values).contains(reg[0]);
                 if(found==false){
-                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
                 }
             }
             if(!isNumeric(reg[1])){
                 boolean found = Arrays.asList(values).contains(reg[1]);
                 if(found==false){
-                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
                 }
             }
         }
@@ -216,10 +216,10 @@ public class AnalyticSintax {
     
     private void generic(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(" ")){ 
-            sendMessageError(line, countLines, errors, "Error no contain registers");
+            sendMessageError(line, countLines, errors, "[ERROR] => [NO CONTAIN REGISTERS]");
         }
         else if(line.contains(",")){
-            sendMessageError(line, countLines, errors, "Instruction invalid");
+            sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
         }
         else{
             String[] instr = line.split(" ");
@@ -227,10 +227,10 @@ public class AnalyticSintax {
                 String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
                 boolean found = Arrays.asList(values).contains(instr[1]);
                 if(found==false){
-                    sendMessageError(line, countLines, errors, "Error registro invalido. Valor invalido");
+                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
                 }
             }else{
-                sendMessageError(line, countLines, errors, "Instruction invalid");
+                sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
             }
         } 
     }

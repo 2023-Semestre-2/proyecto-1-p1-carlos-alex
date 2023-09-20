@@ -13,6 +13,7 @@ import java.util.List;
 public class CPU {
     List<Cell> loadedBCPS;
     BCP actual;
+    int cantBPC = 0;
 
     @Override
     public String toString() {
@@ -30,7 +31,6 @@ public class CPU {
         this.loadedBCPS = loadedBCPS;
     }
 
-   
 
     public BCP getActual() {
         return actual;

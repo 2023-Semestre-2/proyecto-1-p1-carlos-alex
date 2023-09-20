@@ -5,6 +5,7 @@
 package DAO;
 
 import DTO.BCP;
+import DTO.CPU;
 import DTO.Cell;
 import DTO.Document;
 import DTO.Memory;
@@ -315,16 +316,11 @@ public class Methods {
         List<Cell> cells = memory.getCellsReserved();
         List<Cell> cellsNT = memory.getCellsNoReserved();
         int contNT = cellsNT.size();
-        int cont = cells.size();
         int rI = 0;
-        int userIndex = 0;
         int reservedSize = memory.getReservedMemSize();
         int sizeReserved = memory.getCellsReserved().size();
-        int cellsSize = cells.size();
         int contProgram = 0;
         int bcpIndex = 0;
-        int j = 0;
-        System.out.println(reservedSize);
         for (int i=0;i<memory.getMemorySize();i++) {
             
             if (i<reservedSize) {
@@ -357,11 +353,8 @@ public class Methods {
                         rI = 0;
                         System.out.println("si");
                     }
-                    System.out.println(bcpSize);
                     rI++;
                 }
-                
-            
             }
             else {
                 
@@ -380,6 +373,16 @@ public class Methods {
             data[i][0] = Integer.toString(i);
             
         }
+        return data;
+    }
+    
+    public String[][] getCPUTable(CPU cpu) {
+        int cols = 100;
+        String[][] data = new String[cpu.getLoadedBCPS().size()][cols];
+        for (int i=0;i<cpu.getLoadedBCPS().size();i++) {
+            data[i][0] = cpu.getLoadedBCPS().get(i).getBcp().getProgramName();
+        }
+        System.out.println(data[0][0]);
         return data;
     }
     
@@ -427,6 +430,10 @@ public class Methods {
         bcp.setSize(18);
         bcp.setProgramName(cell.getName());
         return bcp;  
+    }
+    
+    public void execute(CPU cpu) {
+        
     }
     
 

@@ -32,6 +32,7 @@ public class Principal extends javax.swing.JFrame {
     
     Memory RAM;
     Memory SSD;
+    CPU cpu = new CPU();
     Integer ramSize = 256;
     Integer ssdSize = 512;
     List<String> routes;
@@ -597,7 +598,7 @@ public class Principal extends javax.swing.JFrame {
         }
         
         RAM.setCellsReserved(cells);
-        System.out.println(RAM);
+        //System.out.println(RAM);
         showRAM();
     }
     
@@ -612,8 +613,11 @@ public class Principal extends javax.swing.JFrame {
     }
     
     public void loadCPU() {
-        CPU cpu = new CPU();
         cpu.setLoadedBCPS(RAM.getCellsReserved());
+        DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+        String [][] data = methods.getCPUTable(cpu);
+        String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
+        model.setDataVector(data, cols);
         System.out.println(cpu);
     }
     

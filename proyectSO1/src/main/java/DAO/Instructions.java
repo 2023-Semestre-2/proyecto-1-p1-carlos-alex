@@ -4,6 +4,8 @@
  */
 package DAO;
 
+import DTO.Cell;
+import DTO.Memory;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
@@ -107,6 +109,47 @@ public class Instructions {
             }
         }
         return register;
+    }
+    
+    //Instruccion para crear, abrir, leer, escribir, eliminar
+    //Se almacena en registro AL el contenido
+    //Se guarda en celda de N memoria mientras haya espacio es la memoria no reservada......
+    //opc 1-Crear 2- Abrir 3- Leer 4- Escribir 5-Eliminar
+    //En mmemoria
+    public Memory int21H(Map<String, String> register, String instruction, Memory memory){
+        if(instruction.equalsIgnoreCase("INT 21H")){
+            String getOperationAh = register.get("AH");
+            //Obtenemos el fin de la ultima linea que seria el inicio de la siguiente celda se le suma 1
+            int startLine = memory.getCellsNoReserved().get(memory.getCellsNoReserved().size()-1).getEndindAddress()+1;
+            int spaceMemory = memory.getUserMemSize()-(startLine-1);
+            String valueDX = register.get("DX");
+            if(startLine<spaceMemory){
+                if(getOperationAh.equalsIgnoreCase("3CH")){
+                    Cell create = new Cell();
+                    create.setName(valueDX);
+                    create.setInstructionAH(valueDX.concat(",false"));
+                    create.setStartingAddress(startLine);
+                    create.setEndindAddress(startLine);
+                    memory.getCellsNoReserved().add(create);
+                    Integer newUserMemSize = memory.getUserMemSize()-1;
+                    memory.setUserMemSize(newUserMemSize);
+                }  
+                else if(getOperationAh.equalsIgnoreCase("3DH")){
+
+                }  
+                else if(getOperationAh.equalsIgnoreCase("4DH")){
+
+                }  
+                else if(getOperationAh.equalsIgnoreCase("40H")){
+
+                }  
+                else if(getOperationAh.equalsIgnoreCase("41H")){
+
+                }  
+            }
+            
+        }
+        return memory;
     }
     
     /**

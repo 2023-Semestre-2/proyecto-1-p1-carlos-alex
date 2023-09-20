@@ -18,9 +18,18 @@ public class Cell {
     private Integer endindAddress;
     private Integer index;
     private boolean isReserved;
+    private String instructionAH;
     private List<WeightTable> instructions;
     private BCP bcp;
 
+    public String getInstructionAH() {
+        return instructionAH;
+    }
+
+    public void setInstructionAH(String instructionAH) {
+        this.instructionAH = instructionAH;
+    }
+    
     public BCP getBcp() {
         return bcp;
     }

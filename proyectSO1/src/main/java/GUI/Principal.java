@@ -7,6 +7,7 @@ package GUI;
 import DAO.AnalyticSintax;
 import DAO.Methods;
 import DTO.BCP;
+import DTO.CPU;
 import DTO.Cell;
 import DTO.Document;
 import DTO.ErrorFail;
@@ -607,7 +608,15 @@ public class Principal extends javax.swing.JFrame {
        String[] cols = {"INDEX", "VALUES"};
        
        model.setDataVector(data, cols);
+       loadCPU();
     }
+    
+    public void loadCPU() {
+        CPU cpu = new CPU();
+        cpu.setLoadedBCPS(RAM.getCellsReserved());
+        System.out.println(cpu);
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

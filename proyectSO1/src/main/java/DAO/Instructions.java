@@ -84,8 +84,26 @@ public class Instructions {
                 register.replace(reg[0], reg[1]);
             }
             if(!isValue){
-                String value = register.get(reg[1]);
-                register.replace(reg[0], value);
+                if(reg[1].equalsIgnoreCase("AX")||
+                reg[1].equalsIgnoreCase("BX")||
+                reg[1].equalsIgnoreCase("CX")||
+                reg[1].equalsIgnoreCase("DX")){
+                    String value = register.get(reg[1]);
+                    register.replace(reg[0], value);
+                }else{
+                    if(reg[0].equalsIgnoreCase("DX")){
+                        register.replace(reg[0], reg[1]);
+                    }
+                    else if(reg[0].equalsIgnoreCase("AH")){
+                        if(reg[1].equalsIgnoreCase("3CH")||
+                            reg[1].equalsIgnoreCase("3DH")||
+                            reg[1].equalsIgnoreCase("4DH")||
+                            reg[1].equalsIgnoreCase("40H")||
+                            reg[1].equalsIgnoreCase("41H")){
+                            register.replace(reg[0], reg[1]);
+                        }
+                    }
+                }
             }
         }
         return register;

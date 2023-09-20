@@ -96,6 +96,9 @@ public class Instructions {
                     if(reg[0].equalsIgnoreCase("DX")){
                         register.replace(reg[0], reg[1]);
                     }
+                    else if(reg[0].equalsIgnoreCase("AL")){
+                        register.replace(reg[0], reg[1]);
+                    }
                     else if(reg[0].equalsIgnoreCase("AH")){
                         if(reg[1].equalsIgnoreCase("3CH")||
                             reg[1].equalsIgnoreCase("3DH")||
@@ -115,14 +118,15 @@ public class Instructions {
     //Se almacena en registro AL el contenido
     //Se guarda en celda de N memoria mientras haya espacio es la memoria no reservada......
     //opc 1-Crear 2- Abrir 3- Leer 4- Escribir 5-Eliminar
-    //En mmemoria
+    //En almacenamiento
     public Memory int21H(Map<String, String> register, String instruction, Memory memory){
         if(instruction.equalsIgnoreCase("INT 21H")){
             String getOperationAh = register.get("AH");
             //Obtenemos el fin de la ultima linea que seria el inicio de la siguiente celda se le suma 1
-            int startLine = memory.getCellsNoReserved().get(memory.getCellsNoReserved().size()-1).getEndindAddress()+1;
-            int spaceMemory = memory.getUserMemSize()-(startLine-1);
+            Integer startLine = memory.getCellsReserved().get(memory.getCellsReserved().size()-1).getEndindAddress()+1;
+            Integer spaceMemory = memory.getUserMemSize()-(startLine-1);
             String valueDX = register.get("DX");
+            String valueAL = register.get("AL");
             if(startLine<spaceMemory){
                 if(getOperationAh.equalsIgnoreCase("3CH")){
                     Cell create = new Cell();
@@ -130,38 +134,42 @@ public class Instructions {
                     create.setInstructionAH(valueDX.concat(",false"));
                     create.setStartingAddress(startLine);
                     create.setEndindAddress(startLine);
-                    memory.getCellsNoReserved().add(create);
-                    Integer newUserMemSize = memory.getUserMemSize()-1;
-                    memory.setUserMemSize(newUserMemSize);
+                    memory.getCellsReserved().add(create);
+                    memory.setUserMemSize(memory.getUserMemSize()-1);
                 }  
                 else if(getOperationAh.equalsIgnoreCase("3DH")){
-                    memory.getCellsNoReserved().forEach(x->{
+                    memory.getCellsReserved().forEach(x->{
                         if(x.getName().equalsIgnoreCase(valueDX)){
                             x.setInstructionAH(valueDX.concat(",true"));
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("4DH")){
-                    memory.getCellsNoReserved().forEach(x->{
+                    memory.getCellsReserved().forEach(x->{
                         if(x.getName().equalsIgnoreCase(valueDX)){
-                            //TO DO 
+                            System.out.println("--DATA--");
+                            System.out.println(valueAL);
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("40H")){
-                    memory.getCellsNoReserved().forEach(x->{
+                    memory.getCellsReserved().forEach(x->{
                         if(x.getName().equalsIgnoreCase(valueDX)){
                             //TO DO 
+                            x.setInstructionAH(x.getInstructionAH().concat(",").concat(valueAL));
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("41H")){
-                    memory.getCellsNoReserved().forEach(x->{
-                        if(x.getName().equalsIgnoreCase(valueDX)){
+                    int i =0;
+                    for(;i<memory.getCellsReserved().size();i++){
+                        if(memory.getCellsReserved().get(i).getName().equalsIgnoreCase(valueDX)){
                             //TO DO 
-
+                            memory.getCellsReserved().remove(i);
                         }
-                    });
+                        i++;
+                    }
+                    memory.setUserMemSize(memory.getUserMemSize()+1);
                 }  
             }
             

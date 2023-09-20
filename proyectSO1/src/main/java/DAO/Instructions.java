@@ -135,16 +135,33 @@ public class Instructions {
                     memory.setUserMemSize(newUserMemSize);
                 }  
                 else if(getOperationAh.equalsIgnoreCase("3DH")){
-
+                    memory.getCellsNoReserved().forEach(x->{
+                        if(x.getName().equalsIgnoreCase(valueDX)){
+                            x.setInstructionAH(valueDX.concat(",true"));
+                        }
+                    });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("4DH")){
-
+                    memory.getCellsNoReserved().forEach(x->{
+                        if(x.getName().equalsIgnoreCase(valueDX)){
+                            //TO DO 
+                        }
+                    });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("40H")){
-
+                    memory.getCellsNoReserved().forEach(x->{
+                        if(x.getName().equalsIgnoreCase(valueDX)){
+                            //TO DO 
+                        }
+                    });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("41H")){
+                    memory.getCellsNoReserved().forEach(x->{
+                        if(x.getName().equalsIgnoreCase(valueDX)){
+                            //TO DO 
 
+                        }
+                    });
                 }  
             }
             

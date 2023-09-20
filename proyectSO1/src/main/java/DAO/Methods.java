@@ -237,7 +237,9 @@ public class Methods {
         int reservedMemory = reservedMemSize;
         int totalMemory = memorySize;
         int spaceMemory = totalMemory-reservedMemory;
-        
+        newMemory.setMemorySize(memorySize);
+        newMemory.setReservedMemSize(reservedMemSize);
+        newMemory.setUserMemSize(spaceMemory);
         int i=0;
         
         if(spaceMemory>0){
@@ -261,8 +263,6 @@ public class Methods {
             }
             newMemory.setCellsNoReserved(cells);
         }
-        System.out.println(newMemory.getCellsAll());
-        System.out.println(newMemory.getCellsNoReserved());
         return newMemory;
     }
     
@@ -287,7 +287,6 @@ public class Methods {
                 if (cells.get(reservedIndex).getIndex() == i) {
                     Cell reservedCell = cells.get(reservedIndex);
                     data[i][1] = reservedCell.getName()+","+reservedCell.getStartingAddress()+","+reservedCell.getEndindAddress();
-                    System.out.println(reservedIndex);
                     reservedIndex++;
                 }
             }
@@ -310,16 +309,49 @@ public class Methods {
         return data;
     }
     
-    public String[][] getRAMTable(Memory memory, List<BCP> bcps, List<Map> processTable) {
+    public String[][] getRAMTable(Memory memory) {
         String[] cols = {"INDEX", "VALUES"};
         String[][] data = new String[memory.getMemorySize()][cols.length];
         List<Cell> cells = memory.getCellsReserved();
         int cont = cells.size();
-        int reservedIndex = 0;
+        int rI = 0;
         int userIndex = 0;
         int reservedSize = memory.getReservedMemSize();
-        int processTableSize = processTable.size();
+        int cellsSize = cells.size();
+        int contProgram = 0;
         for (int i=0;i<memory.getMemorySize();i++) {
+            if (i<reservedSize) {
+                for (int j=0;j<cells.size();j++) {
+                    BCP actual = cells.get(j).getBcp();
+                    if (rI == 0) {
+                        data[i][1] = "BCP => "+actual.getProgramName();
+                    }
+                    if (rI == 1) {
+                        data[i][1] = "STATE = > "+actual.getState();
+                    }
+                    if(rI == 2) {
+                        data[i][1] = "PRIORIDAD = > "+actual.getPriority();
+                    }
+                    if(rI == 3) {
+                        data[i][1] = "ALCANCE = > "+Integer.toString(actual.getProgramSize());
+                    }
+                    if(rI == 2) {
+                        data[i][1] = "INICIO = > "+actual.getRamAddress();
+                    }if(rI == 2) {
+                        data[i][1] = "STATE = > "+actual.getState();
+                    }
+                    
+                    rI++;
+                }
+            }
+            else {
+                if (contProgram<cellsSize) {
+                    List<Cell> cellsNT = memory.getCellsNoReserved();
+                    //int cont = cellsNT.get(contProgram)
+                }
+                
+            }
+            data[i][0] = Integer.toString(i);
             
         }
         return data;
@@ -356,18 +388,22 @@ public class Methods {
         bcp.setState("Listo");
         Registers registers = new Registers();
         Stack stack = new Stack();
+        int programSize = cell.getEndindAddress()-cell.getStartingAddress();
+        
+        bcp.setProgramSize(programSize);
         bcp.setStack(stack);
         bcp.setProgramRegisters(registers);
         bcp.setPC(Integer.toString(CPU));
         bcp.setNextBCPAdress(Integer.toString(NextBCP));
-        int programSize = cell.getEndindAddress()-cell.getStartingAddress();
-        bcp.setAddressCPU(Integer.toString(cell.getStartingAddress()));
-        bcp.setEndingAdress(Integer.toString(programSize));
+        bcp.setRamAddress(Integer.toString(cell.getStartingAddress()));
+        bcp.setEndingAdress(Integer.toString(cell.getEndindAddress()));
         bcp.setPriority("Normal");
         bcp.setSize(18);
         bcp.setProgramName(cell.getName());
         return bcp;  
     }
+    
+
 
     
     

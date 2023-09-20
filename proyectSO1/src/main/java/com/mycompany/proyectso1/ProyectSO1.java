@@ -18,24 +18,19 @@ import java.util.Stack;
 
 /**
  *
- * @author chuck.a
+ * @author chuck.a - alex
  */
 public class ProyectSO1 {
-
+    
+    /**
+     * 
+     * @param args
+     * @throws Exception 
+     */
     public static void main(String[] args) throws Exception {
-        Methods m = new Methods();
-        /*Stack pila = new Stack();
-        Registers r = new Registers();
-        r.getRegister().replace("AX", "6");
-        r.getRegister().replace("BX", "5");
-        System.out.println(r.getRegister());
-        m.cmp(r.getRegister(), "CMP AX,BX");
-        System.out.println(r.getRegister());*/
+        //Methods m = new Methods();
         Principal pr = new Principal();
         pr.show();
-       
-        Memory p = new Memory();
-        
         
         //routes.add("T:\\2023\\S2\\SO\\PRY\\P1\\proyecto-1-p1-carlos-alex\\proyectSO1\\src\\main\\java\\Examples\\example1.asm"); //cambie las loc y prueba, se imprime la memoria
         //routes.add("T:\\2023\\S2\\SO\\PRY\\P1\\proyecto-1-p1-carlos-alex\\proyectSO1\\src\\main\\java\\Examples\\example2.asm");

@@ -25,6 +25,15 @@ public class BCP {
     String priority;
     int size = 0;
     String programName = "";
+    int programSize = 0;
+
+    public int getProgramSize() {
+        return programSize;
+    }
+
+    public void setProgramSize(int programSize) {
+        this.programSize = programSize;
+    }
 
     public String getProgramName() {
         return programName;
@@ -36,8 +45,10 @@ public class BCP {
 
     @Override
     public String toString() {
-        return "BCP{" + "state=" + state + ", PC=" + PC + ", programRegisters=" + programRegisters + ", stack=" + stack + ", addressCPU=" + addressCPU + ", e_s_State=" + e_s_State + ", startupTime=" + startupTime + ", spentTime=" + spentTime + ", nextBCPAdress=" + nextBCPAdress + ", ramAddress=" + ramAddress + ", endingAdress=" + endingAdress + ", priority=" + priority + ", size=" + size + ", programName=" + programName + '}';
+        return "BCP{" + "state=" + state + ", PC=" + PC + ", programRegisters=" + programRegisters + ", stack=" + stack + ", addressCPU=" + addressCPU + ", e_s_State=" + e_s_State + ", startupTime=" + startupTime + ", spentTime=" + spentTime + ", nextBCPAdress=" + nextBCPAdress + ", ramAddress=" + ramAddress + ", endingAdress=" + endingAdress + ", priority=" + priority + ", size=" + size + ", programName=" + programName + ", programSize=" + programSize + '}';
     }
+
+    
 
 
     public int getSize() {

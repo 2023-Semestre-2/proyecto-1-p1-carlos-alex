@@ -19,6 +19,15 @@ public class Cell {
     private Integer index;
     private boolean isReserved;
     private List<WeightTable> instructions;
+    private BCP bcp;
+
+    public BCP getBcp() {
+        return bcp;
+    }
+
+    public void setBcp(BCP bcp) {
+        this.bcp = bcp;
+    }
     
     public Cell() {
     }
@@ -84,6 +93,8 @@ public class Cell {
 
     @Override
     public String toString() {
-        return "Cell{" + "name=" + name + ", location=" + location + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + ", instructions=" + instructions + '}';
+        return "Cell{" + "name=" + name + ", location=" + location + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + ", instructions=" + instructions + ", bcp=" + bcp + '}';
     }
+
+   
 }

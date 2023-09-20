@@ -38,6 +38,7 @@ public class Principal extends javax.swing.JFrame {
     Methods methods = new Methods();
     AnalyticSintax lexer= new AnalyticSintax();
     List<BCP> bcps = new ArrayList<>();
+    List<Map> processTable;
     /**
      * Creates new form Principal
      * @throws java.lang.InterruptedException
@@ -100,7 +101,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(51, 51, 51));
         jPanel3.setName("Actions_Panel"); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 54));
+        jButton1.setBackground(new java.awt.Color(51, 51, 51));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Load Programs");
@@ -112,7 +113,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(0, 0, 54));
+        jButton2.setBackground(new java.awt.Color(51, 51, 51));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Clean");
@@ -120,19 +121,19 @@ public class Principal extends javax.swing.JFrame {
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jButton3.setBackground(new java.awt.Color(0, 0, 54));
+        jButton3.setBackground(new java.awt.Color(51, 51, 51));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Auto Mode");
         jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton4.setBackground(new java.awt.Color(0, 0, 54));
+        jButton4.setBackground(new java.awt.Color(51, 51, 51));
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Execute");
         jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jButton5.setBackground(new java.awt.Color(0, 0, 54));
+        jButton5.setBackground(new java.awt.Color(51, 51, 51));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton5.setForeground(new java.awt.Color(255, 255, 255));
         jButton5.setText("Status");
@@ -378,7 +379,10 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * 
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             String systemRoot = System.getProperty("user.dir");
@@ -414,7 +418,6 @@ public class Principal extends javax.swing.JFrame {
                                 msg+= " | "+errors.get(i).getMessage()+"\n";
                                 flag = true;
                             }
-                            System.out.println(i);
                         }
                         
                         if (flag) {
@@ -423,12 +426,11 @@ public class Principal extends javax.swing.JFrame {
                         }
                         msg = "ERRORS\n";
                         routes.add(archive.getAbsolutePath());
-                        System.out.println("Archivo seleccionado: " + archive.getAbsolutePath());
-                        System.out.println(archive.getName());
+                        
                     }
                     setMemory();
                 } else {
-                    String message = "ERROR DE SINTAXIS [NINGÚN DOCUMENTO SELECCIONADO]";
+                    String message = "ERROR => [NINGÚN DOCUMENTO SELECCIONADO]";
                     JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -476,49 +478,49 @@ public class Principal extends javax.swing.JFrame {
         });
     }
     
+    /**
+     * 
+     * @throws Exception 
+     */
     public void setMemory() throws Exception {
        document = new ArrayList<>();
        methods.loadFile(routes, document);
-       System.out.println(document);
+       //System.out.println(document);
        SSD = methods.loadMemoryReserved(ssdSize/8,ssdSize,document);
-       System.out.println(SSD);
+      // System.out.println(SSD);
        showSSD(SSD);
     }
     
-    public void showSSD(Memory memory)
+    /**
+     * 
+     * @param memory 
+     */
+    public void showSSD(Memory memory) throws Exception
     {
        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
        String [][] data = methods.getSSDTable(SSD);
        String[] cols = {"INDEX", "VALUES"};
 
-        
-        
-        model.setDataVector(data, cols);
-        showProcessTable();
+       model.setDataVector(data, cols);
+       showProcessTable();
     }
     
+    /**
+     * 
+     */
     private void showSettings() {
         Settings dialog = new Settings(this);
         dialog.setVisible(true);
 
         String ssdValue = dialog.getSSDValue();
         String ramValue = dialog.getRAMValue();
-        //System.out.println("Valor SSD: " + ssdValue);
-        //System.out.println("Valor RAM: " + ramValue);
 
-       
-        //SSD = new Memory();
-        //RAM = new Memory();
-        
         if (!ssdValue.equals("")) {
             ramSize = Integer.valueOf(ramValue);
         }
         if (!ramValue.equals("")) {
             ssdSize = Integer.valueOf(ssdValue);
         }
-
-        //SSD.setMemorySize(ssdSize);
-        //RAM.setMemorySize(ramSize);
         jLabel1.setText("SSD: "+ssdSize.toString()+"kb");
         jLabel2.setText("RAM: "+ramSize.toString()+"kb");
         jLabel5.setText("SSD Reserved Memory 0 -> "+ssdSize/8+"kb");
@@ -527,12 +529,15 @@ public class Principal extends javax.swing.JFrame {
       
     }
     
-    public void showProcessTable() {
-        List<Map> processTable = methods.getProcessTable(SSD);
+    /**
+     * 
+     */
+    public void showProcessTable() throws Exception {
+        processTable = methods.getProcessTable(SSD);
         int size = processTable.size();
         String[] cols = {"INDEX", "STATE"};
         String[][] data = new String[size][cols.length];
-        System.out.println(processTable);
+        //System.out.println(processTable);
         
         for (int i=0;i<size;i++) {
             data[i][0] = (String) processTable.get(i).get("Name");
@@ -540,12 +545,15 @@ public class Principal extends javax.swing.JFrame {
         }
         DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
         model.setDataVector(data, cols);
-        getBCP();
+        setMemoryRAM();
         
     }
     
-    public void getBCP() {
-        List<Cell> programs = SSD.getCellsReserved();
+    /**
+     * 
+     */
+    public void getBCP() throws Exception {
+        List<Cell> programs = RAM.getCellsNoReserved();
         int nextBCP;
         for (int i = 0;i<programs.size();i++) {
             
@@ -559,6 +567,46 @@ public class Principal extends javax.swing.JFrame {
             bcps.add(bcp);
         }
         System.out.println(bcps);
+        setBCPS();
+        
+        
+    }
+    
+    public void setMemoryRAM() throws Exception {
+        int reservedMemSize = ramSize/8 - processTable.size();
+        RAM = methods.loadMemoryPrincipal(reservedMemSize, ramSize, SSD);
+        getBCP();
+        
+    }
+    
+    public void setBCPS() {
+        List<Cell> cells = new ArrayList<>();
+        int reservedMemSize = RAM.getReservedMemSize();
+        System.out.println(reservedMemSize);
+        for (int i=0;i<bcps.size();i++) {
+            BCP actual = bcps.get(i);
+            //System.out.println(actual.getSize());
+            if (actual.getSize()<reservedMemSize) {
+                Cell cell = new Cell();
+                cell.setBcp(bcps.get(i));
+                cells.add(cell);
+                reservedMemSize-=actual.getSize();
+                //System.out.println("celda"+cell);
+            }
+        }
+        
+        RAM.setCellsReserved(cells);
+        System.out.println(RAM);
+        showRAM();
+    }
+    
+    public void showRAM() {
+       System.out.println(RAM);
+       DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+       String [][] data = methods.getRAMTable(RAM);
+       String[] cols = {"INDEX", "VALUES"};
+       
+       model.setDataVector(data, cols);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

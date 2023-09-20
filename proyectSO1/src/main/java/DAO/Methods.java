@@ -225,8 +225,8 @@ public class Methods {
             memory.setCellsReserved(cells);
             //memory.setCellsAll(cells);
         }
-        System.out.println(memory.getCellsAll());
-        System.out.println(memory.getCellsReserved());
+        //System.out.println(memory.getCellsAll());
+        //System.out.println(memory.getCellsReserved());
         return memory;
     }
     
@@ -279,7 +279,7 @@ public class Methods {
         String[][] data = new String[memory.getMemorySize()][cols.length];
         List<Cell> cells = memory.getCellsReserved();
         int cont = cells.size();
-        System.out.println(cont);
+        //System.out.println(cont);
         int reservedIndex = 0;
         int userIndex = 0;
         for(int i = 0; i < memory.getMemorySize(); i++){
@@ -319,33 +319,49 @@ public class Methods {
         int rI = 0;
         int userIndex = 0;
         int reservedSize = memory.getReservedMemSize();
+        int sizeReserved = memory.getCellsReserved().size();
         int cellsSize = cells.size();
         int contProgram = 0;
-        int instructionIndex = 0;
+        int bcpIndex = 0;
+        int j = 0;
+        System.out.println(reservedSize);
         for (int i=0;i<memory.getMemorySize();i++) {
+            
             if (i<reservedSize) {
-                for (int j=0;j<cells.size();j++) {
-                    BCP actual = cells.get(j).getBcp();
+                if (bcpIndex<sizeReserved) {
+                    BCP actual = cells.get(bcpIndex).getBcp();
+                    int bcpSize = actual.getSize();
                     if (rI == 0) {
                         data[i][1] = "BCP => "+actual.getProgramName();
                     }
                     if (rI == 1) {
-                        data[i][1] = "STATE = > "+actual.getState();
+                        data[i][1] = "STATE => "+actual.getState();
                     }
                     if(rI == 2) {
-                        data[i][1] = "PRIORIDAD = > "+actual.getPriority();
+                        data[i][1] = "PRIORIDAD => "+actual.getPriority();
                     }
                     if(rI == 3) {
-                        data[i][1] = "ALCANCE = > "+Integer.toString(actual.getProgramSize());
+                        data[i][1] = "ALCANCE => "+Integer.toString(actual.getProgramSize());
                     }
-                    if(rI == 2) {
-                        data[i][1] = "INICIO = > "+actual.getRamAddress();
-                    }if(rI == 2) {
-                        data[i][1] = "STATE = > "+actual.getState();
+                    if(rI == 4) {
+                        data[i][1] = "INICIO => "+actual.getRamAddress();
                     }
-                    
+                    if(rI == 5) {
+                        data[i][1] = "SIGUIENTE BCP => "+actual.getNextBCPAdress();
+                    }
+                    if (rI>5) {
+                        data[i][1] = "BCP => "+actual.getProgramName()+" PRIVATE SPACE";
+                    }
+                    if (rI == bcpSize-1) {
+                        bcpIndex++;
+                        rI = 0;
+                        System.out.println("si");
+                    }
+                    System.out.println(bcpSize);
                     rI++;
                 }
+                
+            
             }
             else {
                 

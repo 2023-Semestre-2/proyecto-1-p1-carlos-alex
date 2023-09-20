@@ -88,7 +88,7 @@ public class Settings extends JDialog{
                 else {
                     String message = "ERROR DE CONFIGURACION [VALORES RAM INVALIDOS]";
                     JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
-                    ssdValidated = false;
+                    ramValidated = false;
                 }
             }
             else {
@@ -129,10 +129,10 @@ public class Settings extends JDialog{
         if (Integer.parseInt(num)<256) {
             String message = "ERROR DE CONFIGURACION [RAM>256]";
             JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
-            ssdValidated = false;
+            ramValidated = false;
         }
         else{
-            ssdValidated = true;
+            ramValidated = true;
         }
     }
     

@@ -42,10 +42,10 @@ public class Settings extends JDialog{
         title.setText("Settings Menu");
 
         JPanel inputPanel = new JPanel(new GridLayout(6, 2));
-        JLabel ssdLabel = new JLabel("SSD:");
+        JLabel ssdLabel = new JLabel("    SSD:");
         ssdField = new JTextField();
         ssdField.setSize(60, 30);
-        JLabel ramLabel = new JLabel("RAM:");
+        JLabel ramLabel = new JLabel("    RAM:");
         ramField = new JTextField();
         JLabel msg = new JLabel();
         msg.setText("Para utilizar la configuracion DEFAULT deje los espacios en blanco y presione [SAVE]");

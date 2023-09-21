@@ -434,59 +434,87 @@ public class Methods {
     }
     
     public void execute(CPU cpu, Instructions executer) {
-        int cantIns = cpu.getOperaciones();
-        BCP bcpActual = cpu.getActual();
-        if (cantIns <= 4 & cantIns !=0) {
-            int i = bcpActual.getActualInstruction();
-            String instruction = bcpActual.getInstructions().get(i).getInstruction();
-            int weight = bcpActual.getInstructions().get(i).getWeight();
-            String action = instruction.split(" ")[0].toLowerCase();
-            Stack actual = bcpActual.getStack();
-            switch(action) {
-                case "mov":
-                    bcpActual.getProgramRegisters().setRegister(executer.mov(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "load":
-                    bcpActual.getProgramRegisters().setRegister(executer.load(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "store":
-                    bcpActual.getProgramRegisters().setRegister(executer.store(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "add":
-                    bcpActual.getProgramRegisters().setRegister(executer.add(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "sub":
-                    bcpActual.getProgramRegisters().setRegister(executer.sub(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "inc":
-                    bcpActual.getProgramRegisters().setRegister(executer.inc(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "dec":
-                    bcpActual.getProgramRegisters().setRegister(executer.dec(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "swap":
-                    bcpActual.getProgramRegisters().setRegister(executer.swap(bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "param":
-                    bcpActual.setStack(executer.param(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "pop":                 
-                    bcpActual.setStack(executer.pop(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                case "push":                 
-                    bcpActual.setStack(executer.push(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
-                    break;
-                default:
-                    break;
-                    
-            }
-            cpu.setOperaciones(cantIns-1);
-            bcpActual.setActualInstruction(++i);
+        if (cpu.getActual() != null) {
+            int cantIns = cpu.getOperaciones();
+            BCP bcpActual = cpu.getActual();
+            int end = cpu.getActual().getInstructions().size();
+            System.out.println("end:"+end);
             
-        }
-        if (cantIns<=0) {
-            if (cpu.getCantBPC() == 1) {
-                cpu.setOperaciones(4);
+            int i = bcpActual.getActualInstruction();
+            System.out.println("cont:"+i);
+            if (cantIns <= 4 & cantIns !=0 & i<end) {
+
+                String instruction = bcpActual.getInstructions().get(i).getInstruction();
+                int weight = bcpActual.getInstructions().get(i).getWeight();
+                String action = instruction.split(" ")[0].toLowerCase();
+                Stack actual = bcpActual.getStack();
+                switch(action) {
+                    case "mov":
+                        bcpActual.getProgramRegisters().setRegister(executer.mov(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "load":
+                        bcpActual.getProgramRegisters().setRegister(executer.load(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "store":
+                        bcpActual.getProgramRegisters().setRegister(executer.store(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "add":
+                        bcpActual.getProgramRegisters().setRegister(executer.add(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "sub":
+                        bcpActual.getProgramRegisters().setRegister(executer.sub(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "inc":
+                        bcpActual.getProgramRegisters().setRegister(executer.inc(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "dec":
+                        bcpActual.getProgramRegisters().setRegister(executer.dec(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "swap":
+                        bcpActual.getProgramRegisters().setRegister(executer.swap(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "param":
+                        bcpActual.setStack(executer.param(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "pop":                 
+                        bcpActual.setStack(executer.pop(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "push":                 
+                        bcpActual.setStack(executer.push(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    default:
+                        break;
+
+                }
+                cpu.setOperaciones(cantIns-1);
+                bcpActual.setActualInstruction(++i);
+            }
+            int indexBCP = cpu.getIndexBCP();
+            if (cantIns<=0) {
+                if (cpu.getCantBPC()>1) {
+                    if ((cpu.getCantBPC()-1) - indexBCP != 0) {
+                        cpu.setOperaciones(4);
+                        cpu.setIndexBCP(++indexBCP);
+                    }
+                    else {
+                        cpu.setOperaciones(4);
+                        cpu.setIndexBCP(0);
+                    }
+                }
+                else {
+                    cpu.setOperaciones(4);
+                }    
+            }
+            System.out.println(cpu.getActual().getProgramRegisters());
+            System.out.println(cpu.getActual().getStack());
+            System.out.println(cpu.getActual().getProgramRegisters());
+            if (i == end) {
+                System.out.println("termine");
+                cpu.removeBCP(indexBCP);
+                if (cpu.getCantBPC()>1) {
+                    cpu.setOperaciones(4);
+                    cpu.setIndexBCP(++indexBCP);
+                }
             }
         }
         

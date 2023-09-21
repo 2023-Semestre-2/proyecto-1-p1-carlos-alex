@@ -322,29 +322,29 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(178, 178, 178)
+                        .addGap(91, 91, 91)
                         .addComponent(jLabel1)
-                        .addGap(335, 335, 335)
+                        .addGap(383, 383, 383)
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 501, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(199, 199, 199)
+                        .addGap(213, 213, 213)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 255, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
                         .addComponent(jLabel4)
                         .addGap(113, 113, 113))))
             .addComponent(jScrollPane6)
@@ -449,10 +449,16 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        System.out.println(cpu.getActual().getProgramRegisters());
-        methods.execute(cpu, executer);
-        System.out.println(cpu.getActual().getProgramRegisters());
-        System.out.println(cpu.getActual().getStack());
+        
+        if (cpu.getActual() != null) {
+            methods.execute(cpu, executer);
+        }
+        else {
+            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
+            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -633,8 +639,9 @@ public class Principal extends javax.swing.JFrame {
         String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
         model.setDataVector(data, cols);
         cpu.setFirstBCP();
-        System.out.println(cpu);
+        //System.out.println(cpu);
     }
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

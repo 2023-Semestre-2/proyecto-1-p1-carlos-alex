@@ -12,18 +12,20 @@ import java.util.List;
  */
 public class CPU {
     List<Cell> loadedBCPS;
-    BCP actual;
-    int cantBPC = 0;
+    BCP actual = null;
+    int cantBCP = 0;
     int operaciones = 4;
-    int indexInstr = 0;
+    int indexBCP = 0;
 
-    public int getIndexInstr() {
-        return indexInstr;
+    public int getIndexBCP() {
+        return indexBCP;
     }
 
-    public void setIndexInstr(int indexInstr) {
-        this.indexInstr = indexInstr;
+    public void setIndexBCP(int indexBCP) {
+        this.indexBCP = indexBCP;
+        this.actual = this.loadedBCPS.get(indexBCP).getBcp();
     }
+
 
     @Override
     public String toString() {
@@ -43,11 +45,11 @@ public class CPU {
     }
 
     public int getCantBPC() {
-        return cantBPC;
+        return cantBCP;
     }
 
     public void setCantBPC(int cantBPC) {
-        this.cantBPC = cantBPC;
+        this.cantBCP = cantBPC;
     }
 
     public int getOperaciones() {
@@ -70,6 +72,17 @@ public class CPU {
     public void setFirstBCP() {
         this.actual = loadedBCPS.get(0).getBcp();
         
+    }
+    
+    public void removeBCP(int i) {
+        this.loadedBCPS.remove(i);
+        if (this.loadedBCPS.isEmpty()) {
+            this.actual = null;
+        }
+        else {
+            this.actual = this.loadedBCPS.get(0).getBcp();
+        }
+        this.cantBCP = this.loadedBCPS.size();
     }
     
 }

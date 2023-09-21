@@ -466,10 +466,9 @@ public class Principal extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         
         if (cpu.getActual() != null) {
-            
             int weight = cpu.getWeight();
             if (weight-1 == 0) {
-                methods.execute(cpu, executer);
+                methods.execute(cpu, executer, jTextPane1);
                 methods.setIRPC(cpu.getActual());
             }
             else {
@@ -480,15 +479,12 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
             }
             cpu.setChangeContext(false);
-            showBCP();
-            
+            showBCP(); 
         }
         else {
             String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
             JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
-        }
-
-        
+        }      
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

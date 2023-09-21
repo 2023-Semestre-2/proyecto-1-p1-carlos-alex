@@ -61,8 +61,11 @@ public class Settings extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Coloca aquí la lógica para cargar la configuración
+                
             }
         });
+        
+        
 
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener((ActionEvent e) -> {

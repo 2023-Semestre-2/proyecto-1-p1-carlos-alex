@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
+import javax.swing.JTextPane;
 
 /**
  *
@@ -433,7 +434,7 @@ public class Methods {
         return bcp;  
     }
     
-    public void execute(CPU cpu, Instructions executer) {
+    public void execute(CPU cpu, Instructions executer, JTextPane consola) {
         if (cpu.getActual() != null) {
             int cantIns = cpu.getOperaciones();
             BCP bcpActual = cpu.getActual();
@@ -487,6 +488,7 @@ public class Methods {
                     case "jmp":
                         carreo = Integer.parseInt(instruction.split(" ")[1]);
                         bcpActual.setActualInstruction(i+carreo);
+                        setIRPC(bcpActual);
                         break;
                     case "je":
                         carreo = Integer.parseInt(instruction.split(" ")[1]);
@@ -500,7 +502,17 @@ public class Methods {
                             bcpActual.setActualInstruction(i+carreo);
                         }
                         break;
-       
+                    case "int":
+                        String op = instruction.split(" ")[1];
+                        switch(op) {
+                            case "10H":
+                                String msg = ">>>";
+                                msg+=bcpActual.getProgramRegisters().getRegister().get("DX");
+                                consola.setText(msg);
+                                break;
+                            default:
+                                break;
+                        }
                     default:
                         break;
 
@@ -548,13 +560,16 @@ public class Methods {
     }
     
     public void setIRPC(BCP bcpActual) {
-        int starting = Integer.parseInt(bcpActual.getRamAddress());
-        int actual = bcpActual.getActualInstruction();
-        int ending = Integer.parseInt(bcpActual.getEndingAdress());
-        bcpActual.getProgramRegisters().getRegister().replace("PC", Integer.toString(starting+actual));
-        if (starting+actual+1<ending) {
-            bcpActual.getProgramRegisters().getRegister().replace("IR", Integer.toString(starting+actual+1));
+        if (bcpActual != null) {
+            int starting = Integer.parseInt(bcpActual.getRamAddress());
+            int actual = bcpActual.getActualInstruction();
+            int ending = Integer.parseInt(bcpActual.getEndingAdress());
+            bcpActual.getProgramRegisters().getRegister().replace("PC", Integer.toString(starting+actual));
+            if (starting+actual+1<ending) {
+                bcpActual.getProgramRegisters().getRegister().replace("IR", Integer.toString(starting+actual+1));
+            }
         }
+        
         
     }
     

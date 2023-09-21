@@ -17,12 +17,19 @@ import java.util.Scanner;
 /**
  *
  * @author Caili
+ * Sirve para analizar si hay errores de sintaxis en el codigo
  */
 public class AnalyticSintax {
 
     public AnalyticSintax() {
     }
     
+    /**
+     * Metodo principal que tendra los errores en una lista
+     * @param location
+     * @return
+     * @throws FileNotFoundException 
+     */
     public List<ErrorFail> getErrors(String location) throws FileNotFoundException{
         List<ErrorFail> errors = new ArrayList<>();
         int countLines = 0;
@@ -85,7 +92,12 @@ public class AnalyticSintax {
         return errors;
     }
     
-    
+    /**
+     * Valida que interrupciones sean existentes
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void intError(String line, int countLines, List<ErrorFail> errors){
         String[] instr = line.split(" ");
         if(!instr[1].equalsIgnoreCase("20H")
@@ -96,6 +108,12 @@ public class AnalyticSintax {
         }
     }
     
+    /**
+     * Valida que la instruccion Param cumpla con las espectativas sino muestra un error
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void paramError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
             String[] instr = line.split(" ");
@@ -122,6 +140,12 @@ public class AnalyticSintax {
         }
     }
     
+    /**
+     * Valida que si hay errores de desplazamiento
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void displacementError(String line, int countLines, List<ErrorFail> errors){
         String[] instr = line.split(" ");
         boolean isValue = isNumeric(instr[1]);
@@ -130,6 +154,12 @@ public class AnalyticSintax {
         }
     }
     
+    /**
+     * Valida para la instruccion SWAP y CMP cumplan con las espectativas
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void swapCmpError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
             sendMessageError(line, countLines, errors, "[ERROR] => [FALTA DE REGISTROS VALIDOS]");
@@ -159,11 +189,22 @@ public class AnalyticSintax {
         }
     }
     
-    
+    /**
+     * Valida para la instruccion PUSH y POP cumplan con las espectativas
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void pushPopError(String line, int countLines, List<ErrorFail> errors){
         generic(line, countLines,errors); 
     }
-        
+    
+    /**
+     * Valida para la instruccion INC y DEC cumplan con las espectativas
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void incDecError(String line, int countLines, List<ErrorFail> errors){
         if(line.contains(" ")){
            String[] instr = line.split(" ");
@@ -178,16 +219,33 @@ public class AnalyticSintax {
             }
         }
     }
-            
+      
+    /**
+     * Valida para la instruccion ADD y SUB cumplan con las espectativas
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void addSubError(String line, int countLines, List<ErrorFail> errors){
         generic(line, countLines,errors); 
     }
     
-    
+    /**
+     * Valida para la instruccion STORE y LOAD cumplan con las espectativas
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void storeLoadError(String line, int countLines, List<ErrorFail> errors){
         generic(line, countLines,errors);
     }
     
+    /**
+     * Valida para la instruccion MOV  cumplan con las espectativas
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     public void movError(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(",")){
             sendMessageError(line, countLines, errors, "[ERROR] => [NO CONTAIN REGISTERS]");
@@ -222,6 +280,12 @@ public class AnalyticSintax {
         }
     }
     
+    /**
+     * Metodo generico para validar errores en instrucciones
+     * @param line
+     * @param countLines
+     * @param errors 
+     */
     private void generic(String line, int countLines, List<ErrorFail> errors){
         if(!line.contains(" ")){ 
             sendMessageError(line, countLines, errors, "[ERROR] => [NO CONTAIN REGISTERS]");
@@ -243,10 +307,25 @@ public class AnalyticSintax {
         } 
     }
     
+    /**
+     * Metodo para monstrar mensaje de error
+     * @param line
+     * @param countLines
+     * @param errors
+     * @param message 
+     */
     private void sendMessageError(String line, int countLines, List<ErrorFail> errors, String message){
         ErrorFail e= getGetError(line, message, countLines);
         errors.add(e);
     }
+    
+    /**
+     * Metodo para obtener mensaje de error
+     * @param line
+     * @param message
+     * @param countLines
+     * @return 
+     */
     private ErrorFail getGetError(String line, String message, int countLines){
         ErrorFail error = new ErrorFail();
         error.setIsError(true);

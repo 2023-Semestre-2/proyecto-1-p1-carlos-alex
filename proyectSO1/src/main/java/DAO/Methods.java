@@ -447,6 +447,7 @@ public class Methods {
                 String instruction = bcpActual.getInstructions().get(i).getInstruction();
                 String action = instruction.split(" ")[0].toLowerCase();
                 Stack actual = bcpActual.getStack();
+                int carreo = 0;
                 switch(action) {
                     case "mov":
                         bcpActual.getProgramRegisters().setRegister(executer.mov(bcpActual.getProgramRegisters().getRegister(), instruction));
@@ -481,6 +482,26 @@ public class Methods {
                     case "push":                 
                         bcpActual.setStack(executer.push(actual,bcpActual.getProgramRegisters().getRegister(), instruction));
                         break;
+                    case "cmp":
+                        bcpActual.getProgramRegisters().setRegister(executer.cmp(bcpActual.getProgramRegisters().getRegister(), instruction));
+                        break;
+                    case "jmp":
+                        carreo = Integer.parseInt(instruction.split(" ")[1]);
+                        bcpActual.setActualInstruction(i+carreo);
+                        break;
+                    case "je":
+                        carreo = Integer.parseInt(instruction.split(" ")[1]);
+                        if (bcpActual.getProgramRegisters().getRegister().get("FLAG").equals("true")) {
+                            bcpActual.setActualInstruction(i+carreo);
+                        }
+                        break;
+                    case "jne":
+                        carreo = Integer.parseInt(instruction.split(" ")[1]);
+                        if (bcpActual.getProgramRegisters().getRegister().get("FLAG").equals("false")) {
+                            bcpActual.setActualInstruction(i+carreo);
+                        }
+                        break;
+       
                     default:
                         break;
 

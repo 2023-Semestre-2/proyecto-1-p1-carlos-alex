@@ -242,9 +242,24 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "VALUES"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable3.setGridColor(new java.awt.Color(51, 51, 51));
         jTable3.setShowGrid(true);
         jScrollPane4.setViewportView(jTable3);
@@ -337,16 +352,16 @@ public class Principal extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                         .addContainerGap())
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(213, 213, 213)
+                        .addGap(157, 157, 157)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 282, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 347, Short.MAX_VALUE)
                         .addComponent(jLabel4)
-                        .addGap(113, 113, 113))))
+                        .addGap(104, 104, 104))))
             .addComponent(jScrollPane6)
         );
         jPanel1Layout.setVerticalGroup(
@@ -451,7 +466,21 @@ public class Principal extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         
         if (cpu.getActual() != null) {
-            methods.execute(cpu, executer);
+            
+            int weight = cpu.getWeight();
+            if (weight-1 == 0) {
+                methods.execute(cpu, executer);
+            }
+            else {
+                cpu.setWeight(--weight);
+            }
+            if (cpu.isChangeContext()) {
+                String message = "CAMBIO DE CONTEXTO!";
+                JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
+            }
+            cpu.setChangeContext(false);
+            showBCP();
+            
         }
         else {
             String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
@@ -639,9 +668,45 @@ public class Principal extends javax.swing.JFrame {
         String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
         model.setDataVector(data, cols);
         cpu.setFirstBCP();
+        int actualIns = cpu.getActual().getActualInstruction();
+        int weight = cpu.getActual().getInstructions().get(actualIns).getWeight();
+        cpu.setWeight(weight);
+        showBCP();
         //System.out.println(cpu);
     }
     
+    public void showBCP() {
+       DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+       String[][] verticalData = {
+            {"Name", "State", "PC", "IR", "AC","AX", "BX", "CX", "DX", "SIZE" },
+            {cpu.getActual().getProgramName(), cpu.getActual().getState(),
+                cpu.getActual().getProgramRegisters().getRegister().get("PC"),
+                cpu.getActual().getProgramRegisters().getRegister().get("IR"),
+                cpu.getActual().getProgramRegisters().getRegister().get("AC"),
+                cpu.getActual().getProgramRegisters().getRegister().get("AX"),
+                cpu.getActual().getProgramRegisters().getRegister().get("BX"),
+                cpu.getActual().getProgramRegisters().getRegister().get("CX"),
+                cpu.getActual().getProgramRegisters().getRegister().get("DX"),
+                Integer.toString(cpu.getActual().getProgramSize())
+            }
+        };
+
+        // Convierte los datos a forma horizontal (columnas)
+        int rowCount = verticalData.length;
+        int colCount = verticalData[0].length;
+        String[][] horizontalData = new String[colCount][rowCount];
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < colCount; j++) {
+                horizontalData[j][i] = verticalData[i][j];
+            }
+        }
+
+        // Nombres de las columnas
+        String[] columnNames = {"ID", "VALUES"};
+       
+       model.setDataVector(horizontalData, columnNames);
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

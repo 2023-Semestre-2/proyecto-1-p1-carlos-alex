@@ -445,7 +445,6 @@ public class Methods {
             if (cantIns <= 4 & cantIns !=0 & i<end) {
 
                 String instruction = bcpActual.getInstructions().get(i).getInstruction();
-                int weight = bcpActual.getInstructions().get(i).getWeight();
                 String action = instruction.split(" ")[0].toLowerCase();
                 Stack actual = bcpActual.getStack();
                 switch(action) {
@@ -488,6 +487,13 @@ public class Methods {
                 }
                 cpu.setOperaciones(cantIns-1);
                 bcpActual.setActualInstruction(++i);
+                int actualIns = bcpActual.getActualInstruction();
+                if (actualIns<end) {
+                    int weight = bcpActual.getInstructions().get(actualIns).getWeight();
+                    cpu.setWeight(weight);
+                }
+                
+                
             }
             int indexBCP = cpu.getIndexBCP();
             if (cantIns<=0) {
@@ -495,6 +501,7 @@ public class Methods {
                     if ((cpu.getCantBPC()-1) - indexBCP != 0) {
                         cpu.setOperaciones(4);
                         cpu.setIndexBCP(++indexBCP);
+                        cpu.setChangeContext(true);
                     }
                     else {
                         cpu.setOperaciones(4);
@@ -514,6 +521,7 @@ public class Methods {
                 if (cpu.getCantBPC()>1) {
                     cpu.setOperaciones(4);
                     cpu.setIndexBCP(++indexBCP);
+                    cpu.setChangeContext(true);
                 }
             }
         }

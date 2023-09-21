@@ -16,6 +16,24 @@ public class CPU {
     int cantBCP = 0;
     int operaciones = 4;
     int indexBCP = 0;
+    int weight = 0;
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+    boolean changeContext = false;
+
+    public boolean isChangeContext() {
+        return changeContext;
+    }
+
+    public void setChangeContext(boolean changeContext) {
+        this.changeContext = changeContext;
+    }
 
     public int getIndexBCP() {
         return indexBCP;

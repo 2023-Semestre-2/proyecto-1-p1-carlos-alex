@@ -194,7 +194,8 @@ public class AnalyticSintax {
         }else{
             String[] instr = line.split(" ");
             String [] reg = instr[1].split(",");
-            String[] values = {"AX", "BX", "CX", "DX", "ax", "bx", "cx", "dx"};
+            String[] values = {"AX", "BX", "CX", "DX","AH","AL", "ax", "bx", "cx", "dx","ah","al"};
+            String[] valuesDX = {"3CH", "3DH", "4DH", "40H","41H","3ch", "3dh", "4dh", "40h", "41h"};
             
             if(isNumeric(reg[0])){
                 sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
@@ -206,9 +207,16 @@ public class AnalyticSintax {
                 }
             }
             if(!isNumeric(reg[1])){
-                boolean found = Arrays.asList(values).contains(reg[1]);
-                if(found==false){
-                    sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
+                if(reg[0].equalsIgnoreCase("AH")){
+                    boolean found = Arrays.asList(valuesDX).contains(reg[1]);
+                    if(found==false){
+                        sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
+                    }
+                }else{
+                    boolean found = Arrays.asList(values).contains(reg[1]);
+                    if(found==false && (!reg[0].equalsIgnoreCase("DX") && !reg[0].equalsIgnoreCase("AL"))){
+                        sendMessageError(line, countLines, errors, "[ERROR] => [INTERRUPCION INVALIDA]");
+                    }
                 }
             }
         }

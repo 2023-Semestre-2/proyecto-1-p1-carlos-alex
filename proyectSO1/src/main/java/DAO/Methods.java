@@ -501,12 +501,12 @@ public class Methods {
                     if ((cpu.getCantBPC()-1) - indexBCP != 0) {
                         cpu.setOperaciones(4);
                         cpu.setIndexBCP(++indexBCP);
-                        cpu.setChangeContext(true);
                     }
                     else {
                         cpu.setOperaciones(4);
                         cpu.setIndexBCP(0);
                     }
+                    cpu.setChangeContext(true);
                 }
                 else {
                     cpu.setOperaciones(4);

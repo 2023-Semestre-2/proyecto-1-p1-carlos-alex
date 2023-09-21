@@ -4,6 +4,7 @@
  */
 package DTO;
 
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -26,6 +27,26 @@ public class BCP {
     int size = 0;
     String programName = "";
     int programSize = 0;
+    int actualInstruction = 0;
+    private List<WeightTable> instructions;
+    
+
+    public int getActualInstruction() {
+        return actualInstruction;
+    }
+
+    public void setActualInstruction(int actualInstruction) {
+        this.actualInstruction = actualInstruction;
+    }
+    
+
+    public List<WeightTable> getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(List<WeightTable> instructions) {
+        this.instructions = instructions;
+    }
 
     public int getProgramSize() {
         return programSize;
@@ -45,8 +66,10 @@ public class BCP {
 
     @Override
     public String toString() {
-        return "BCP{" + "state=" + state + ", PC=" + PC + ", programRegisters=" + programRegisters + ", stack=" + stack + ", addressCPU=" + addressCPU + ", e_s_State=" + e_s_State + ", startupTime=" + startupTime + ", spentTime=" + spentTime + ", nextBCPAdress=" + nextBCPAdress + ", ramAddress=" + ramAddress + ", endingAdress=" + endingAdress + ", priority=" + priority + ", size=" + size + ", programName=" + programName + ", programSize=" + programSize + '}';
+        return "BCP{" + "state=" + state + ", PC=" + PC + ", programRegisters=" + programRegisters + ", stack=" + stack + ", addressCPU=" + addressCPU + ", e_s_State=" + e_s_State + ", startupTime=" + startupTime + ", spentTime=" + spentTime + ", nextBCPAdress=" + nextBCPAdress + ", ramAddress=" + ramAddress + ", endingAdress=" + endingAdress + ", priority=" + priority + ", size=" + size + ", programName=" + programName + ", programSize=" + programSize + ", actualInstruction=" + actualInstruction + ", instructions=" + instructions + '}';
     }
+
+  
 
     
 

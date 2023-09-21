@@ -5,6 +5,7 @@
 package GUI;
 
 import DAO.AnalyticSintax;
+import DAO.Instructions;
 import DAO.Methods;
 import DTO.BCP;
 import DTO.CPU;
@@ -38,6 +39,7 @@ public class Principal extends javax.swing.JFrame {
     List<String> routes;
     List<Document> document;
     Methods methods = new Methods();
+    Instructions executer = new Instructions();
     AnalyticSintax lexer= new AnalyticSintax();
     List<BCP> bcps = new ArrayList<>();
     List<Map> processTable;
@@ -134,6 +136,11 @@ public class Principal extends javax.swing.JFrame {
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setText("Execute");
         jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setBackground(new java.awt.Color(51, 51, 51));
         jButton5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -441,6 +448,13 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        System.out.println(cpu.getActual().getProgramRegisters());
+        methods.execute(cpu, executer);
+        System.out.println(cpu.getActual().getProgramRegisters());
+        System.out.println(cpu.getActual().getStack());
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -618,6 +632,7 @@ public class Principal extends javax.swing.JFrame {
         String [][] data = methods.getCPUTable(cpu);
         String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
         model.setDataVector(data, cols);
+        cpu.setFirstBCP();
         System.out.println(cpu);
     }
     

@@ -14,6 +14,16 @@ public class CPU {
     List<Cell> loadedBCPS;
     BCP actual;
     int cantBPC = 0;
+    int operaciones = 4;
+    int indexInstr = 0;
+
+    public int getIndexInstr() {
+        return indexInstr;
+    }
+
+    public void setIndexInstr(int indexInstr) {
+        this.indexInstr = indexInstr;
+    }
 
     @Override
     public String toString() {
@@ -29,6 +39,23 @@ public class CPU {
 
     public void setLoadedBCPS(List<Cell> loadedBCPS) {
         this.loadedBCPS = loadedBCPS;
+        setCantBPC(loadedBCPS.size());
+    }
+
+    public int getCantBPC() {
+        return cantBPC;
+    }
+
+    public void setCantBPC(int cantBPC) {
+        this.cantBPC = cantBPC;
+    }
+
+    public int getOperaciones() {
+        return operaciones;
+    }
+
+    public void setOperaciones(int operaciones) {
+        this.operaciones = operaciones;
     }
 
 
@@ -38,6 +65,11 @@ public class CPU {
 
     public void setActual(BCP actual) {
         this.actual = actual;
+    }
+    
+    public void setFirstBCP() {
+        this.actual = loadedBCPS.get(0).getBcp();
+        
     }
     
 }

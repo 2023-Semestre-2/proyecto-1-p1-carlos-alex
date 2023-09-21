@@ -34,4 +34,9 @@ public class Registers {
     public void setRegister(Map<String, String> register) {
         this.register = register;
     }
+
+    @Override
+    public String toString() {
+        return "Registers{" + "register=" + register + '}';
+    }
 }

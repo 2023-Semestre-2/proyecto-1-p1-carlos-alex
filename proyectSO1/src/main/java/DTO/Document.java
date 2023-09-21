@@ -7,6 +7,7 @@ package DTO;
 /**
  *
  * @author chuck.a
+ * Clase para manejar la informacion de los archivos o documentos
  */
 public class Document {
     private int index;

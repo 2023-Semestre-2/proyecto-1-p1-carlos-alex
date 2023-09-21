@@ -7,6 +7,7 @@ package DTO;
 /**
  *
  * @author Caili
+ * Clase para manejar los pesos de las instrucciones
  */
 public class WeightTable {
     private int numberLine;

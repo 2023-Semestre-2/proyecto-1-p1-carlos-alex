@@ -7,6 +7,7 @@ package DTO;
 /**
  *
  * @author Caili
+ * Clase que maneja los fallos de las instrucciones contiene mensajes
  */
 public class ErrorFail {
     private int numLine;

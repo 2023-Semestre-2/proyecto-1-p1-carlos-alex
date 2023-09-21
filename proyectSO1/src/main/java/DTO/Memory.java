@@ -10,6 +10,7 @@ import java.util.List;
 /**
  *
  * @author asmal
+ * Clase para manejar la informacion en memoria y todo el conjunto de celdas
  */
 public class Memory {
     private List<Cell> cellsAll = new ArrayList<>();

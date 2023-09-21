@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  *
  * @author Caili
+ * Clase para manejar los registros del procesador
  */
 public class Registers {
     Map<String, String> register = new HashMap<>();

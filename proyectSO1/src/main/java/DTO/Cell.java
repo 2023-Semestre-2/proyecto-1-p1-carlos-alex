@@ -9,6 +9,7 @@ import java.util.List;
 /**
  *
  * @author Caili
+ * Clase para manejar informacion importante en las celdas...
  */
 public class Cell {
     

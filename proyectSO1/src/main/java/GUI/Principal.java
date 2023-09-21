@@ -470,6 +470,7 @@ public class Principal extends javax.swing.JFrame {
             int weight = cpu.getWeight();
             if (weight-1 == 0) {
                 methods.execute(cpu, executer);
+                methods.setIRPC(cpu.getActual());
             }
             else {
                 cpu.setWeight(--weight);
@@ -671,6 +672,7 @@ public class Principal extends javax.swing.JFrame {
         int actualIns = cpu.getActual().getActualInstruction();
         int weight = cpu.getActual().getInstructions().get(actualIns).getWeight();
         cpu.setWeight(weight);
+        methods.setIRPC(cpu.getActual());
         showBCP();
         //System.out.println(cpu);
     }

@@ -443,7 +443,6 @@ public class Methods {
             int i = bcpActual.getActualInstruction();
             System.out.println("cont:"+i);
             if (cantIns <= 4 & cantIns !=0 & i<end) {
-
                 String instruction = bcpActual.getInstructions().get(i).getInstruction();
                 String action = instruction.split(" ")[0].toLowerCase();
                 Stack actual = bcpActual.getStack();
@@ -545,6 +544,16 @@ public class Methods {
                     cpu.setChangeContext(true);
                 }
             }
+        } 
+    }
+    
+    public void setIRPC(BCP bcpActual) {
+        int starting = Integer.parseInt(bcpActual.getRamAddress());
+        int actual = bcpActual.getActualInstruction();
+        int ending = Integer.parseInt(bcpActual.getEndingAdress());
+        bcpActual.getProgramRegisters().getRegister().replace("PC", Integer.toString(starting+actual));
+        if (starting+actual+1<ending) {
+            bcpActual.getProgramRegisters().getRegister().replace("IR", Integer.toString(starting+actual+1));
         }
         
     }

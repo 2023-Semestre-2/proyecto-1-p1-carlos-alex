@@ -132,7 +132,7 @@ public class Instructions {
                     Cell create = new Cell();
                     create.setIndex(startLine);
                     create.setName(valueDX);
-                    create.setInstructionAH(valueDX.concat(",false"));
+                    create.setInstructionAH(valueDX);
                     create.setStartingAddress(startLine);
                     create.setEndindAddress(startLine);
                     memory.getCellsReserved().add(create);
@@ -141,7 +141,7 @@ public class Instructions {
                 else if(getOperationAh.equalsIgnoreCase("3DH")){
                     memory.getCellsReserved().forEach(x->{
                         if(x.getName().equalsIgnoreCase(valueDX)){
-                            x.setInstructionAH(valueDX.concat(",true"));
+                            x.setInstructionAH(valueDX);
                         }
                     });
                 }  

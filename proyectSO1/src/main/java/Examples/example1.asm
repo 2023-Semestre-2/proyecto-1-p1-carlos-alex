@@ -1,3 +1,6 @@
+MOV DX,"msg"
+MOV AH,3ch
+INT 21H
 MOV AX,5
 MOV BX,10
 LOAD AX

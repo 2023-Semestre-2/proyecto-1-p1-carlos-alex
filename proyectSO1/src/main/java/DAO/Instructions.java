@@ -434,4 +434,16 @@ public class Instructions {
         return register;
     }
     
+    public Map<String, String> int09h(Map<String, String> register, String value) {
+        int val = Integer.parseInt(value);
+        if (val>0 & val<255) {
+            register.replace("DX", String.valueOf(value));
+        }
+        else {
+            //imprimir
+        }
+        return register;
+        
+    }
+    
 }

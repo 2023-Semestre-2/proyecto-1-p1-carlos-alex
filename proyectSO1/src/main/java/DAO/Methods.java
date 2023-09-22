@@ -106,7 +106,8 @@ public class Methods {
         int weight = 0;
         if(line.contains("MOV") || line.contains("INC")
             || line.contains("DEC") || line.contains("SWAP")
-            || line.contains("POP") || line.contains("PUSH")){
+            || line.contains("POP") || line.contains("PUSH")
+            || line.contains("INT 09H")){
             weight=weight+1;
         }
         else if(line.contains("LOAD") || line.contains("STORE")
@@ -296,8 +297,13 @@ public class Methods {
             if (userIndex<cont) {
                 Cell userCell = cells.get(userIndex);
                 if (i>=userCell.getStartingAddress() & i<userCell.getEndindAddress()) {
-                    List<WeightTable> instructions = userCell.getInstructions();
-                    data[i][1] = instructions.get(i-userCell.getStartingAddress()).getInstruction();
+                    if (userCell.getIndex()!= null) {
+                        List<WeightTable> instructions = userCell.getInstructions();
+                        data[i][1] = instructions.get(i-userCell.getStartingAddress()).getInstruction();
+                    }
+                    else {
+                        System.out.println("si es null");
+                    }
                     
                 }
                 if (i>userCell.getEndindAddress()) {
@@ -434,7 +440,7 @@ public class Methods {
         return bcp;  
     }
     
-    public void execute(CPU cpu, Instructions executer, JTextPane consola) {
+    public void execute(CPU cpu, Instructions executer, JTextPane consola, Memory ssd) {
         if (cpu.getActual() != null) {
             int cantIns = cpu.getOperaciones();
             BCP bcpActual = cpu.getActual();
@@ -510,8 +516,20 @@ public class Methods {
                                 msg+=bcpActual.getProgramRegisters().getRegister().get("DX");
                                 consola.setText(msg);
                                 break;
+                            case "09H":
+                                cpu.setWait(true);
+                                System.out.println("si");
+                                String resume = consola.getText()+"\n>>>";
+                                consola.setText(resume);
+                                break;
+                            case "21H":
+                                executer.int21H(bcpActual.getProgramRegisters().getRegister(), instruction, ssd);
+                                break;
+                                
                             default:
                                 break;
+                                
+                                
                         }
                     default:
                         break;

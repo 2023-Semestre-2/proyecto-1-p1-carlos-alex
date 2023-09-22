@@ -5,19 +5,33 @@
 package GUI;
 
 import DAO.Methods;
+import DTO.JsonMemory;
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonSyntaxException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -60,13 +74,55 @@ public class Settings extends JDialog{
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Coloca aquí la lógica para cargar la configuración
+                 try{
+                    String systemRoot = System.getProperty("user.dir");
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.setDialogTitle("Seleccione el archivo que deseas ejecutar");
+                    File root = new File(systemRoot);
+                    fileChooser.setCurrentDirectory(root);
+
+                    // Filtra los tipos de archivos permitidos
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON CODE", "json");
+                    fileChooser.setFileFilter(filter);
+                    fileChooser.setMultiSelectionEnabled(true);
+                    
+                    // Abre el explorador de archivos y espera a que el usuario seleccione uno o varios archivos
+                    int result = fileChooser.showOpenDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        File[] selectedFiles = fileChooser.getSelectedFiles();
+                        System.out.print(selectedFiles);
+                        if (selectedFiles==null || selectedFiles.length == 0) {
+                            String message = "ERROR => [NINGÚN DOCUMENTO SELECCIONADO]";
+                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }
+                        else if(selectedFiles.length > 1) {
+                            String message = "ERROR => [HAY VARIOS DOCUMENTOS SELECCIONADOS]";
+                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.ERROR_MESSAGE);
+                        }else{
+                            for (File archive : selectedFiles) {
+                                // create Gson instance
+                                Gson gson = new Gson();
+                                // convert a JSON string to a User object
+                                try ( // create a reader
+                                        Reader reader = Files.newBufferedReader(Paths.get(archive.getPath()))) {
+                                    // convert a JSON string to a JsonMemory object
+                                    JsonMemory memory = gson.fromJson(reader,JsonMemory.class);
+                                    // print user object
+                                    System.out.println(memory);
+                                    ssdField.setText(memory.getSsd().toString());
+                                    ramField.setText(memory.getRam().toString());
+                                    // close reader
+                                }
                 
+                            }
+                        }
+                    }
+                }
+                catch (JsonIOException | JsonSyntaxException | HeadlessException | IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
-        
-        
-
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener((ActionEvent e) -> {
             Methods methods = new Methods();
@@ -100,8 +156,6 @@ public class Settings extends JDialog{
             validateMemories();
         });
 
-        // Agregar componentes al diálogo
-        
         add(inputPanel, BorderLayout.CENTER);
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(loadButton);

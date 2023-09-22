@@ -17,6 +17,15 @@ public class CPU {
     int operaciones = 4;
     int indexBCP = 0;
     int weight = 0;
+    boolean wait = false;
+
+    public boolean isWait() {
+        return wait;
+    }
+
+    public void setWait(boolean wait) {
+        this.wait = wait;
+    }
 
     public int getWeight() {
         return weight;

@@ -13,6 +13,9 @@ import DTO.Cell;
 import DTO.Document;
 import DTO.ErrorFail;
 import DTO.Memory;
+import java.awt.Color;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,7 @@ public class Principal extends javax.swing.JFrame {
     AnalyticSintax lexer= new AnalyticSintax();
     List<BCP> bcps = new ArrayList<>();
     List<Map> processTable;
+    boolean press = false;
     /**
      * Creates new form Principal
      * @throws java.lang.InterruptedException
@@ -51,6 +55,26 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        String console = "ALC TERMINAL\nCopyright (C) ALC Software. Todos los derechos reservados.\n>>>";
+        jTextPane1.setText(console);
+        //jTextPane1.disable();
+
+        jTextPane1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER & !press) {
+                    
+                    String[] valores = jTextPane1.getText().split(">>>");
+                    String num = valores[valores.length-1];
+                    BCP actual = cpu.getActual();
+                    actual.getProgramRegisters().setRegister(executer.int09h(cpu.getActual().getProgramRegisters().getRegister(), num));
+                    System.out.println("Enter presionado:"+num);
+                    cpu.setWait(false);
+                    press =true;
+                    showBCP();
+                }
+            }
+        });
         showSettings();
         
  
@@ -234,6 +258,10 @@ public class Principal extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
+        jTextPane1.setBackground(new java.awt.Color(0, 102, 102));
+        jTextPane1.setBorder(new javax.swing.border.MatteBorder(null));
+        jTextPane1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextPane1.setCaretColor(new java.awt.Color(255, 255, 255));
         jScrollPane3.setViewportView(jTextPane1);
 
         jTable3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -466,20 +494,33 @@ public class Principal extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         
         if (cpu.getActual() != null) {
-            int weight = cpu.getWeight();
-            if (weight-1 == 0) {
-                methods.execute(cpu, executer, jTextPane1);
-                methods.setIRPC(cpu.getActual());
+            if (!cpu.isWait()) {
+                int weight = cpu.getWeight();
+                if (weight-1 == 0) {
+                    methods.execute(cpu, executer, jTextPane1, SSD);
+                    methods.setIRPC(cpu.getActual());
+                    System.out.println(SSD);
+                    try {
+                        refreshSSD();
+                    } catch (Exception ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                else {
+                    cpu.setWeight(--weight);
+                }
+                if (cpu.isChangeContext()) {
+                    String message = "CAMBIO DE CONTEXTO!";
+                    JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
+                }
+                cpu.setChangeContext(false);
+                showBCP(); 
             }
             else {
-                cpu.setWeight(--weight);
+                System.out.println("No tira");
+                String message = "ESPERANDO ENTRADA DEL USUARIO!";
+                JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
             }
-            if (cpu.isChangeContext()) {
-                String message = "CAMBIO DE CONTEXTO!";
-                JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
-            }
-            cpu.setChangeContext(false);
-            showBCP(); 
         }
         else {
             String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
@@ -551,6 +592,15 @@ public class Principal extends javax.swing.JFrame {
 
        model.setDataVector(data, cols);
        showProcessTable();
+    }
+    
+    public void refreshSSD() throws Exception
+    {
+       DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+       String [][] data = methods.getSSDTable(SSD);
+       String[] cols = {"INDEX", "VALUES"};
+
+       model.setDataVector(data, cols);
     }
     
     /**
@@ -706,6 +756,9 @@ public class Principal extends javax.swing.JFrame {
        model.setDataVector(horizontalData, columnNames);
     }
     
+    public void drawCPU() {
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

@@ -9,6 +9,8 @@ import DTO.Memory;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -132,41 +134,56 @@ public class Instructions {
                     Cell create = new Cell();
                     create.setIndex(startLine);
                     create.setName(valueDX);
-                    create.setInstructionAH(valueDX.concat(",false"));
+                    create.setInstructionAH(valueDX);
                     create.setStartingAddress(startLine);
                     create.setEndindAddress(startLine);
+                    create.setIsOpen(false);
                     memory.getCellsReserved().add(create);
                     memory.setUserMemSize(memory.getUserMemSize()-1);
                 }  
                 else if(getOperationAh.equalsIgnoreCase("3DH")){
                     memory.getCellsReserved().forEach(x->{
                         if(x.getName().equalsIgnoreCase(valueDX)){
-                            x.setInstructionAH(valueDX.concat(",true"));
+                            x.setInstructionAH(valueDX);
+                            x.setIsOpen(true);
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("4DH")){
                     memory.getCellsReserved().forEach(x->{
-                        if(x.getName().equalsIgnoreCase(valueDX)){
-                            System.out.println("--DATA--");
-                            System.out.println(valueAL);
+                        if(x.isIsOpen()){
+                            if(x.getName().equalsIgnoreCase(valueDX)){
+                                System.out.println("--DATA--");
+                                System.out.println(valueAL);
+                            }
+                        }else{
+                            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
+                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("40H")){
                     memory.getCellsReserved().forEach(x->{
-                        if(x.getName().equalsIgnoreCase(valueDX)){
-                            //TO DO 
-                            x.setInstructionAH(x.getInstructionAH().concat(",").concat(valueAL));
+                        if(x.isIsOpen()){
+                            if(x.getName().equalsIgnoreCase(valueDX)){
+                                x.setInstructionAH(x.getInstructionAH().concat(",").concat(valueAL));
+                            }
+                        }else{
+                            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
+                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("41H")){
                     int i =0;
                     for(;i<memory.getCellsReserved().size();i++){
-                        if(memory.getCellsReserved().get(i).getName().equalsIgnoreCase(valueDX)){
-                            //TO DO 
-                            memory.getCellsReserved().remove(i);
+                        if(memory.getCellsReserved().get(i).isIsOpen()){
+                            if(memory.getCellsReserved().get(i).getName().equalsIgnoreCase(valueDX)){
+                                memory.getCellsReserved().remove(i);
+                            }
+                        }else{
+                            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
+                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
                         }
                         i++;
                     }

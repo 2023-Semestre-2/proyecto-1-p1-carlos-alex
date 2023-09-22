@@ -21,6 +21,7 @@ public class Cell {
     private boolean isReserved;
     private String instructionAH;
     private List<WeightTable> instructions;
+    private boolean isOpen;
     private BCP bcp;
 
     public String getInstructionAH() {
@@ -101,10 +102,16 @@ public class Cell {
         this.instructions = instructions;
     }
 
-    @Override
-    public String toString() {
-        return "Cell{" + "name=" + name + ", location=" + location + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + ", instructions=" + instructions + ", bcp=" + bcp + '}';
+    public boolean isIsOpen() {
+        return isOpen;
     }
 
-   
+    public void setIsOpen(boolean isOpen) {
+        this.isOpen = isOpen;
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" + "name=" + name + ", location=" + location + ", startingAddress=" + startingAddress + ", endindAddress=" + endindAddress + ", index=" + index + ", isReserved=" + isReserved + ", instructionAH=" + instructionAH + ", instructions=" + instructions + ", isOpen=" + isOpen + ", bcp=" + bcp + '}';
+    }
 }

@@ -530,7 +530,6 @@ public class Principal extends javax.swing.JFrame {
                 int weight = cpu.getWeight();
                 if (weight-1 == 0) {
                     methods.execute(cpu, executer, jTextPane1, SSD);
-                    //drawCPU();
                     methods.setIRPC(cpu.getActual());
                     System.out.println(SSD.getCellsReserved());
                     
@@ -548,6 +547,9 @@ public class Principal extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 }
                 cpu.setChangeContext(false);
+                int cantClics = cpu.getActual().getCantClics();
+                cpu.getActual().setCantClics(++cantClics);
+                drawCPU();
                 showBCP(); 
             }
             else {
@@ -792,15 +794,18 @@ public class Principal extends javax.swing.JFrame {
     }
     
     public void drawCPU() {
-        String [][] data = methods.getCPUTable(cpu);
+        String [][] data = cpu.getProcess();
         String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
         int i = cpu.getIndexBCP();
-        int j = data[i+1].length;
-        System.out.println("i:"+i+" j:"+j);
-        data[i+1][j+1] = "X";
+        int j = 0;
+        if (cpu.getActual()!=null) {
+            j = cpu.getActual().getCantClics();
+        }
+
+        data[i][j] = "X";
+        
         DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
         model.setDataVector(data, cols);
-        System.out.println(data[0][1]);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

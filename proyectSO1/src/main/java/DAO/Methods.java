@@ -389,8 +389,8 @@ public class Methods {
     }
     
     public String[][] getCPUTable(CPU cpu) {
-        String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
-        String[][] data = new String[cpu.getLoadedBCPS().size()][cols.length];
+        int cols = 1000;
+        String[][] data = new String[cpu.getLoadedBCPS().size()][cols];
         for (int i=0;i<cpu.getLoadedBCPS().size();i++) {
             data[i][0] = cpu.getLoadedBCPS().get(i).getBcp().getProgramName();
         }

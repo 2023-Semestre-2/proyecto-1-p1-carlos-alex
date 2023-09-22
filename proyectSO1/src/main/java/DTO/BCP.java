@@ -28,6 +28,15 @@ public class BCP {
     String programName = "";
     int programSize = 0;
     int actualInstruction = 0;
+    int cantClics = 1;
+
+    public int getCantClics() {
+        return cantClics;
+    }
+
+    public void setCantClics(int cantClics) {
+        this.cantClics = cantClics;
+    }
     private List<WeightTable> instructions;
     
 

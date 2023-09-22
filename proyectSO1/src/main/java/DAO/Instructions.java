@@ -130,6 +130,7 @@ public class Instructions {
             if(startLine<spaceMemory){
                 if(getOperationAh.equalsIgnoreCase("3CH")){
                     Cell create = new Cell();
+                    create.setIndex(startLine);
                     create.setName(valueDX);
                     create.setInstructionAH(valueDX.concat(",false"));
                     create.setStartingAddress(startLine);

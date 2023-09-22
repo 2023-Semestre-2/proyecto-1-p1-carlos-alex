@@ -725,6 +725,7 @@ public class Principal extends javax.swing.JFrame {
             BCP actual = bcps.get(i);
             //System.out.println(actual.getSize());
             if (actual.getSize()<reservedMemSize) {
+                actual.setPosition(i);
                 Cell cell = new Cell();
                 cell.setBcp(bcps.get(i));
                 cells.add(cell);
@@ -765,6 +766,7 @@ public class Principal extends javax.swing.JFrame {
     }
     
     public void showBCP() {
+       cpu.getActual().setState("Ejecucion");
        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
        String[][] verticalData = {
             {"Name", "State", "PC", "IR", "AC","AX", "BX", "CX", "DX", "SIZE" },
@@ -800,7 +802,7 @@ public class Principal extends javax.swing.JFrame {
     public void drawCPU() {
         String [][] data = cpu.getProcess();
         String[] cols = {"CPU","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","21","22","23","24","25"};
-        int i = cpu.getIndexBCP();
+        int i = cpu.getActual().getPosition();
         int j = 0;
         if (cpu.getActual()!=null) {
             j = cpu.getActual().getCantClics();

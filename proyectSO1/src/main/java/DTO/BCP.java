@@ -12,7 +12,7 @@ import java.util.Stack;
  * @author asmal
  */
 public class BCP {
-    String state;
+    String state = "Nuevo";
     String PC;
     Registers programRegisters;
     Stack stack;

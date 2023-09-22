@@ -344,28 +344,24 @@ public class Methods {
                     if (rI == 0) {
                         data[i][1] = "BCP => "+actual.getProgramName();
                     }
-                    if (rI == 1) {
-                        data[i][1] = "STATE => "+actual.getState();
-                    }
-                    if(rI == 2) {
+                    if(rI == 1) {
                         data[i][1] = "PRIORIDAD => "+actual.getPriority();
                     }
-                    if(rI == 3) {
+                    if(rI == 2) {
                         data[i][1] = "ALCANCE => "+Integer.toString(actual.getProgramSize());
                     }
-                    if(rI == 4) {
+                    if(rI == 3) {
                         data[i][1] = "INICIO => "+actual.getRamAddress();
                     }
-                    if(rI == 5) {
+                    if(rI == 4) {
                         data[i][1] = "SIGUIENTE BCP => "+actual.getNextBCPAdress();
                     }
-                    if (rI>5) {
+                    if (rI>4) {
                         data[i][1] = "BCP => "+actual.getProgramName()+" PRIVATE SPACE";
                     }
                     if (rI == bcpSize-1) {
                         bcpIndex++;
                         rI = 0;
-                        System.out.println("si");
                     }
                     rI++;
                 }
@@ -413,16 +409,17 @@ public class Methods {
     //metodo que resiva la memoria SSD, obtenga los 5 programas cargados, los cargue en la memoria de usuario, llame a otro metodo para generar el BCP de cada uno
     public List<Map> getProcessTable(Memory SSD) { 
         List<Cell> cells = SSD.getCellsReserved();
-        Map<String, String> program = new HashMap<>();
+        
         List<Map> processTable = new ArrayList<>();
         int size = cells.size();
         
         for (int i=0;i<size;i++) {
+            Map<String, String> program = new HashMap<>();
             program.put("Name", cells.get(i).getName());
             program.put("State", "Nuevo");
             processTable.add(program);
         }
-        
+        System.out.println("p:"+processTable);
         return processTable;
     }
     
@@ -525,7 +522,6 @@ public class Methods {
                                 break;
                             case "09H":
                                 cpu.setWait(true);
-                                System.out.println("si");
                                 String resume = consola.getText()+"\n>>>";
                                 consola.setText(resume);
                                 break;

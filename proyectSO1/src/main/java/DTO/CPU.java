@@ -18,6 +18,15 @@ public class CPU {
     int indexBCP = 0;
     int weight = 0;
     boolean wait = false;
+    String[][] process;
+
+    public String[][] getProcess() {
+        return process;
+    }
+
+    public void setProcess(String[][] process) {
+        this.process = process;
+    }
 
     public boolean isWait() {
         return wait;

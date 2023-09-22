@@ -157,7 +157,7 @@ public class Instructions {
                                 System.out.println(valueAL);
                             }
                         }else{
-                            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
+                            String message = "AVISO! NO SE HA ABIERTO EL ARCHIVO";
                             JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });

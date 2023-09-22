@@ -383,8 +383,8 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="2" rowCount="0">
-                    <Column editable="true" title="INDEX" type="java.lang.Object"/>
-                    <Column editable="true" title="VALUES" type="java.lang.Object"/>
+                    <Column editable="false" title="INDEX" type="java.lang.Object"/>
+                    <Column editable="false" title="VALUES" type="java.lang.Object"/>
                   </Table>
                 </Property>
               </Properties>

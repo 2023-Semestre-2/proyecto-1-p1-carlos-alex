@@ -134,7 +134,7 @@ public class Instructions {
                     Cell create = new Cell();
                     create.setIndex(startLine);
                     create.setName(valueDX);
-                    create.setInstructionAH(valueDX);
+                    create.setInstructionAH("");
                     create.setStartingAddress(startLine);
                     create.setEndindAddress(startLine);
                     create.setIsOpen(false);
@@ -151,39 +151,41 @@ public class Instructions {
                 }  
                 else if(getOperationAh.equalsIgnoreCase("4DH")){
                     memory.getCellsReserved().forEach(x->{
-                        if(x.isIsOpen()){
-                            if(x.getName().equalsIgnoreCase(valueDX)){
+                        if(x.getName().equalsIgnoreCase(valueDX)){
+                            if(x.isIsOpen()){
                                 System.out.println("--DATA--");
                                 System.out.println(valueAL);
                             }
-                        }else{
-                            String message = "AVISO! NO SE HA ABIERTO EL ARCHIVO";
-                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            else{
+                                String message = "AVISO! EL ARCHIVO NO ESTA ABIERTO";
+                                JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("40H")){
                     memory.getCellsReserved().forEach(x->{
-                        if(x.isIsOpen()){
-                            if(x.getName().equalsIgnoreCase(valueDX)){
+                        if(x.getName().equalsIgnoreCase(valueDX)){
+                            if(x.isIsOpen()){
                                 x.setInstructionAH(x.getInstructionAH().concat(",").concat(valueAL));
-                            }
-                        }else{
-                            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
-                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            }else{
+                                String message = "AVISO! EL ARCHIVO NO ESTA ABIERTO";
+                                JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            } 
                         }
                     });
                 }  
                 else if(getOperationAh.equalsIgnoreCase("41H")){
                     int i =0;
                     for(;i<memory.getCellsReserved().size();i++){
-                        if(memory.getCellsReserved().get(i).isIsOpen()){
-                            if(memory.getCellsReserved().get(i).getName().equalsIgnoreCase(valueDX)){
+                        if(memory.getCellsReserved().get(i).getName().equalsIgnoreCase(valueDX)){
+                            if(memory.getCellsReserved().get(i).isIsOpen()){
                                 memory.getCellsReserved().remove(i);
                             }
-                        }else{
-                            String message = "AVISO! NO HAY PROGRAMAS PARA EJECUTAR";
-                            JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            else{
+                                String message = "AVISO! EL ARCHIVO NO ESTA ABIERTO";
+                                JOptionPane.showMessageDialog(new JFrame(), message, "ERROR", JOptionPane.INFORMATION_MESSAGE);
+                            }
                         }
                         i++;
                     }

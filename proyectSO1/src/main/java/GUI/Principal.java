@@ -252,7 +252,15 @@ public class Principal extends javax.swing.JFrame {
             new String [] {
                 "INDEX", "VALUES"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N

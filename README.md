@@ -11,3 +11,4 @@ Recordar que el video debe ser público y con sonido para ser visto por el profe
 Faltantes
 Ejecucion Automatica
 Estadisticas
+Cambios de estado

@@ -289,7 +289,12 @@ public class Methods {
             if (reservedIndex<cont) {
                 if (cells.get(reservedIndex).getIndex() == i) {
                     Cell reservedCell = cells.get(reservedIndex);
-                    data[i][1] = reservedCell.getName()+","+reservedCell.getStartingAddress()+","+reservedCell.getEndindAddress();
+                    if (!reservedCell.isIsReserved()) {
+                        data[i][1] = reservedCell.getName()+reservedCell.getInstructionAH();
+                    }
+                    else {
+                        data[i][1] = reservedCell.getName()+","+reservedCell.getStartingAddress()+","+reservedCell.getEndindAddress();
+                    }
                     reservedIndex++;
                 }
             }

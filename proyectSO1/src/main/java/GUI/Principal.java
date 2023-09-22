@@ -508,9 +508,10 @@ public class Principal extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(new JFrame(), msg, "ERROR", JOptionPane.ERROR_MESSAGE);
                             flag = false;
                         }
-                        msg = "ERRORS\n";
-                        routes.add(archive.getAbsolutePath());
-                        
+                        else {
+                            routes.add(archive.getAbsolutePath());
+                        } 
+                        msg = "ERRORS\n";  
                     }
                     setMemory();
                 } else {
@@ -546,10 +547,13 @@ public class Principal extends javax.swing.JFrame {
                     String message = "CAMBIO DE CONTEXTO!";
                     JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 }
+                if (!cpu.isChangeContext()) {
+                    drawCPU();
+                    int cantClics = cpu.getActual().getCantClics();
+                    cpu.getActual().setCantClics(++cantClics);
+                }
                 cpu.setChangeContext(false);
-                int cantClics = cpu.getActual().getCantClics();
-                cpu.getActual().setCantClics(++cantClics);
-                drawCPU();
+
                 showBCP(); 
             }
             else {

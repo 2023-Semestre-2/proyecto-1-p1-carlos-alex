@@ -14,7 +14,7 @@ public class CPU {
     List<Cell> loadedBCPS;
     BCP actual = null;
     int cantBCP = 0;
-    int operaciones = 4;
+    int operaciones = 5;
     int indexBCP = 0;
     int weight = 0;
     boolean wait = false;

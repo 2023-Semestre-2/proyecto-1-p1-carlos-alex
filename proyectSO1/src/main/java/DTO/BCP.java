@@ -29,6 +29,15 @@ public class BCP {
     int programSize = 0;
     int actualInstruction = 0;
     int cantClics = 1;
+    int position = 0;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public int getCantClics() {
         return cantClics;

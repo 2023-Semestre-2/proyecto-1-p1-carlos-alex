@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Stack;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 
 /**
@@ -450,11 +452,11 @@ public class Methods {
             int cantIns = cpu.getOperaciones();
             BCP bcpActual = cpu.getActual();
             int end = cpu.getActual().getInstructions().size();
-            System.out.println("end:"+end);
+
             
             int i = bcpActual.getActualInstruction();
-            System.out.println("cont:"+i);
-            if (cantIns <= 4 & cantIns !=0 & i<end) {
+         
+            if (cantIns <= 5 & cantIns !=0 & i<end) {
                 String instruction = bcpActual.getInstructions().get(i).getInstruction();
                 String action = instruction.split(" ")[0].toLowerCase();
                 Stack actual = bcpActual.getStack();
@@ -530,6 +532,9 @@ public class Methods {
                             case "21H":
                                 executer.int21H(bcpActual.getProgramRegisters().getRegister(), instruction, ssd);
                                 break;
+                            case "20H":
+                                bcpActual = null;
+                                break;
                                 
                             default:
                                 break;
@@ -554,27 +559,26 @@ public class Methods {
             if (cantIns<=0) {
                 if (cpu.getCantBPC()>1) {
                     if ((cpu.getCantBPC()-1) - indexBCP != 0) {
-                        cpu.setOperaciones(4);
+                        cpu.setOperaciones(5);
                         cpu.setIndexBCP(++indexBCP);
                     }
                     else {
-                        cpu.setOperaciones(4);
+                        cpu.setOperaciones(5);
                         cpu.setIndexBCP(0);
                     }
                     cpu.setChangeContext(true);
                 }
                 else {
-                    cpu.setOperaciones(4);
+                    cpu.setOperaciones(5);
                 }    
             }
-            System.out.println(cpu.getActual().getProgramRegisters());
-            System.out.println(cpu.getActual().getStack());
-            System.out.println(cpu.getActual().getProgramRegisters());
+            
             if (i == end) {
-                System.out.println("termine");
+                String message = "PROGRAMA EJECUTADO";
+                JOptionPane.showMessageDialog(new JFrame(), message, "AVISO", JOptionPane.INFORMATION_MESSAGE);
                 cpu.removeBCP(indexBCP);
                 if (cpu.getCantBPC()>1) {
-                    cpu.setOperaciones(4);
+                    cpu.setOperaciones(5);
                     cpu.setIndexBCP(++indexBCP);
                     cpu.setChangeContext(true);
                 }
